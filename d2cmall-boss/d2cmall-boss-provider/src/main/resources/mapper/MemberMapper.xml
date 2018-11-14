@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.member.dao.MemberMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.member.model.Member">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="login_code" property="loginCode" />
+        <result column="account" property="account" />
+        <result column="login_number" property="loginNumber"/>
+        <result column="login_ip" property="loginIp" />
+        <result column="login_date" property="loginDate" />
+        <result column="source" property="source" />
+        <result column="bind_date" property="bindDate"/>
+        <result column="user_info" property="userInfo" />
+        <result column="open_id" property="openId" />
+    </resultMap>
+
+   <select id="countMembersByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_member b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findMembersByQuery" resultMap="baseMap">
+        SELECT * FROM crm_member b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+ 	<select id="findMembersByLoginCode" resultMap="baseMap">
+        SELECT * FROM crm_member b WHERE login_code=#{loginCode} AND source='D2CMall' LIMIT 0,1
+    </select>
+    
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<update id="updateOnlineStatus">
+		update online_member set up_status = 1 where up_status=0 
+	</update>
+	
+	<insert id="insertOnlineMember">	
+		replace into crm_member
+				(create_date,modify_date,creator,login_code,
+		account,login_number,login_ip,login_date,source,bind_date,user_info,open_id)
+			SELECT create_date,modify_date,creator,login_code,
+		account,login_number,login_ip,login_date,source,bind_date,user_info,open_id from online_member where up_status=0
+	</insert>
+</mapper>
+
+
+
+
+
+
+

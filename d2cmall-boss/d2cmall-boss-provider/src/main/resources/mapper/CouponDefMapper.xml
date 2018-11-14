@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.member.dao.CouponDefMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.member.model.CouponDef">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="type" property="type" />
+        <result column="association" property="association" />
+        <result column="name" property="name"  />
+        <result column="sub_title" property="subTitle" />
+        <result column="enable_date" property="enableDate"  />
+        <result column="expire_date" property="expireDate" />
+        <result column="active_day" property="activeDay" />
+        <result column="active_hour" property="activeHour"  />
+        <result column="claim_start" property="claimStart" />
+        <result column="claim_end" property="claimEnd"  />  
+        <result column="amount" property="amount"  />
+        <result column="need_amount" property="needAmount" />
+        <result column="quantity" property="quantity"  />
+        <result column="claimed" property="claimed" />
+        <result column="claim_limit" property="claimLimit" />
+        <result column="enable" property="enable"  />
+        <result column="random" property="random" />     
+        <result column="remark" property="remark"  />
+    </resultMap>
+
+   <select id="countCouponDefsByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_coupon_def b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findCouponDefsByQuery" resultMap="baseMap">
+        SELECT * FROM crm_coupon_def b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_coupon_def
+   </select>
+</mapper>
+
+
+
+
+
+
+

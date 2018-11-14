@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.product.dao.BrandMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.product.model.Brand">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="code" property="code" />
+        <result column="online_id" property="onlineId" />
+        <result column="name" property="name"  />
+        <result column="designer" property="designer"  />
+        <result column="country" property="country" />
+        <result column="shop" property="shop"  />
+        <result column="description" property="description" />
+        <result column="top_category" property="topCategory"  />
+        <result column="sec_category" property="secCategory" />
+        <result column="page_group" property="pageGroup" />
+        <result column="tags" property="tags"  />
+    </resultMap>
+
+   <select id="countBrandsByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_brand b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findBrandsByQuery" resultMap="baseMap">
+        SELECT * FROM crm_brand b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_brand
+   </select>
+   
+   <update id="updateOnlineBrand">
+	   UPDATE crm_brand o,(SELECT * FROM online_brand  st0 WHERE st0.up_status=0) of 
+			SET o.create_date = of.create_date,
+			o.modify_date = of.modify_date,
+			o.last_modify_man = of.last_modify_man,
+			o.creator= of.creator,
+			o.CODE= of.CODE,
+			o.NAME= of.NAME,
+			o.designer= of.designer,
+			o.shop= of.shop,
+			o.description= of.description,
+			o.top_category= of.top_category,
+			o.sec_category= of.sec_category,
+			o.page_group= of.page_group,
+			o.tags= of.tags,
+			o.online_id=of.id
+			WHERE o.code=of.code
+   </update>
+   	
+   <update id="updateOfflineBrand">
+	   UPDATE crm_brand o,(SELECT * FROM offline_brand  st0 WHERE st0.up_status=0) of 
+			SET o.create_date = of.create_date,
+				 o.modify_date = of.modify_date,
+				 o.last_modify_man = of.last_modify_man,
+				 o.creator = of.creator,
+				 o. CODE = of. CODE,
+				 o. NAME = of. NAME,
+				 o.designer = of.designer,
+				 o.shop = of.shop,
+				 o.description = of.description
+			WHERE o.code=of.code
+   </update>
+   
+   <insert id="insertOnlineBrand">
+	   INSERT INTO crm_brand (
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			CODE,
+			NAME,
+			designer,
+			country,
+			shop,
+			description,
+			top_category,
+			sec_category,
+			page_group,
+			tags,
+			online_id
+		) SELECT
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			CODE,
+			NAME,
+			designer,
+			country,
+			shop,
+			description,
+			top_category,
+			sec_category,
+			page_group,
+			tags,
+			id
+		FROM
+			online_brand
+		WHERE
+			up_status = 0
+		AND code NOT IN (SELECT code FROM crm_brand)
+   </insert>
+   	
+   <insert id="insertOfflineBrand">
+    INSERT INTO crm_brand (
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			CODE,
+			NAME,
+			designer,
+			country,
+			shop,
+			description,
+			top_category,
+			sec_category,
+			tags
+		) SELECT
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			CODE,
+			NAME,
+			designer,
+			country,
+			shop,
+			description,
+			top_category,
+			sec_category,
+			tags
+		FROM
+			offline_brand
+		WHERE
+			up_status = 0
+		AND code NOT IN (SELECT code FROM crm_brand)
+   </insert>
+   
+</mapper>
+
+
+
+
+
+
+

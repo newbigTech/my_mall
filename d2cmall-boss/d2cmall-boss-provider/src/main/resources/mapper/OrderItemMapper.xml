@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.order.dao.OrderItemMapper">
+	<resultMap id="baseMap" type="com.d2c.boss.order.model.OrderItem">
+		<id column="id" property="id" />
+		<result column="create_date" property="createDate" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="last_modify_man" property="lastModifyMan" />
+		<result column="creator" property="creator" />
+
+		<result column="order_sn" property="orderSn" />
+		<result column="product_sn" property="productSn" />
+		<result column="product_name" property="productName" />
+		<result column="product_img" property="productImg" />
+		<result column="leaf_category" property="leafCategory" />
+		<result column="quantity" property="quantity" />
+		<result column="original_price" property="originalPrice" />
+		<result column="coupon_amount" property="couponAmount" />
+		<result column="order_promotion_amount" property="orderPromotionAmount" />
+		<result column="sale_price" property="salePrice" />
+		<result column="sale1" property="sale1" />
+		<result column="sale2" property="sale2" />
+		<result column="product_sku_sn" property="productSkuSn" />
+		<result column="status" property="status" />
+		<result column="delivery_sn" property="deliverySn" />
+		<result column="delivery_comp" property="deliveryComp" />
+		<result column="delivery_time" property="deliveryTime" />
+		<result column="brand_name" property="brandName" />
+		<result column="brand_code" property="brandCode" />
+		<result column="shop_code" property="shopCode" />
+		<result column="shop_name" property="shopName" />
+		<result column="promotion_amount" property="promotionAmount" />
+		<result column="requisition" property="requisition" />
+		<result column="close_time" property="closeTime" />
+		<result column="payment_time" property="paymentTime" />
+	</resultMap>
+
+	<select id="countOrderItemsByQuery" resultType="Integer">
+		SELECT count(*) FROM crm_orderitem b WHERE 1=1
+		<if test="query != null">
+			<include refid="Searcher" />
+		</if>
+	</select>
+
+	<select id="findOrderItemsByQuery" resultMap="baseMap">
+		SELECT * FROM crm_orderitem b WHERE 1=1
+		<if test="query != null">
+			<include refid="Searcher" />
+		</if>
+		LIMIT #{pager.startNumber}, #{pager.pageSize}
+	</select>
+
+	<select id="findByOrderSn" resultMap="baseMap">
+		SELECT * FROM crm_orderitem
+		b WHERE b.order_sn= #{orderSn}
+	</select>
+
+	<sql id="Searcher">
+		<if test="query != null">
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+
+	<insert id="insertOfflineOrderItems">
+		INSERT INTO crm_orderitem (
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		order_sn,
+		product_sn,
+		product_name,
+		product_img,
+		leaf_category,
+		quantity,
+		original_price,
+		sale_price,
+		sale1,
+		sale2,
+		product_sku_sn,
+		brand_name,
+		brand_code,
+		shop_code,
+		shop_name,
+		promotion_amount,
+		offline_source_id,
+		status
+		) SELECT
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		order_sn,
+		product_sn,
+		product_name,
+		product_img,
+		leaf_category,
+		quantity,
+		original_price,
+		sale_price,
+		sale1,
+		sale2,
+		product_sku_sn,
+		brand_name,
+		brand_code,
+		shop_code,
+		shop_name,
+		promotion_amount,
+		id,
+		status
+		FROM
+		offline_orderitem
+		WHERE
+		not exists (SELECT
+		1 FROM crm_orderitem,offline_orderitem where
+		crm_orderitem.offline_source_id=offline_orderitem.id)
+		and up_status = 0
+	</insert>
+
+	<update id="updateOfflineOrderItems">
+		UPDATE crm_orderitem so,
+		(SELECT * FROM
+		offline_orderitem st0
+		WHERE st0.up_status = 0) too
+		SET so.create_date =
+		too.create_date,
+		so.modify_date = too.modify_date,
+		so.last_modify_man =
+		too.last_modify_man,
+		so.creator = too.creator,
+		so.order_sn =
+		too.order_sn,
+		so.product_sn = too.product_sn,
+		so.product_name =
+		too.product_name,
+		so.product_img = too.product_img,
+		so.leaf_category =
+		too.leaf_category,
+		so.quantity = too.quantity,
+		so.original_price =
+		too.original_price,
+		so.sale_price = too.sale_price,
+		so.sale1 =
+		too.sale1,
+		so.sale2 = too.sale2,
+		so.product_sku_sn = too.product_sku_sn,
+		so.brand_name = too.brand_name,
+		so.brand_code = too.brand_code,
+		so.shop_code = too.shop_code,
+		so.shop_name = too.shop_name,
+		so.promotion_amount = too.promotion_amount,
+		so.status = too.status
+		WHERE
+		so.offline_source_id = too.id
+	</update>
+
+	<insert id="insertOnlineOrderItems">
+		INSERT INTO crm_orderitem (
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		order_sn,
+		product_sn,
+		product_name,
+		product_img,
+		leaf_category,
+		quantity,
+		original_price,
+		sale_price,
+		sale1,
+		sale2,
+		product_sku_sn,
+		brand_name,
+		brand_code,
+		shop_code,
+		shop_name,
+		promotion_amount,
+		online_source_id,
+		status
+		) SELECT
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		order_sn,
+		product_sn,
+		product_name,
+		product_img,
+		leaf_category,
+		quantity,
+		original_price,
+		sale_price,
+		sale1,
+		sale2,
+		product_sku_sn,
+		brand_name,
+		brand_code,
+		shop_code,
+		shop_name,
+		promotion_amount,
+		id,
+		status
+		FROM
+		online_orderitem
+		WHERE
+		not exists (SELECT
+		1 FROM crm_orderitem,online_orderitem where
+		crm_orderitem.online_source_id=online_orderitem.id)
+		and up_status = 0
+	</insert>
+
+	<update id="updateOnlineOrderItems">
+		UPDATE crm_orderitem so,
+		(SELECT * FROM
+		online_orderitem st0
+		WHERE st0.up_status = 0) too
+		SET so.create_date =
+		too.create_date,
+		so.modify_date = too.modify_date,
+		so.last_modify_man =
+		too.last_modify_man,
+		so.creator = too.creator,
+		so.order_sn =
+		too.order_sn,
+		so.product_sn = too.product_sn,
+		so.product_name =
+		too.product_name,
+		so.product_img = too.product_img,
+		so.leaf_category =
+		too.leaf_category,
+		so.quantity = too.quantity,
+		so.original_price =
+		too.original_price,
+		so.sale_price = too.sale_price,
+		so.sale1 =
+		too.sale1,
+		so.sale2 = too.sale2,
+		so.product_sku_sn = too.product_sku_sn,
+		so.brand_name = too.brand_name,
+		so.brand_code = too.brand_code,
+		so.shop_code = too.shop_code,
+		so.shop_name = too.shop_name,
+		so.promotion_amount = too.promotion_amount,
+		so.status = too.status
+		WHERE
+		so.online_source_id = too.id
+	</update>
+
+	<!--线上业务 -->
+	<sql id="Query">
+		<if test="query.skuSn!=null and query.skuSn!=''">
+			AND oi.product_sku_sn=#{query.skuSn}
+		</if>
+		<if test="query.storeCode!=null and query.storeCode!=''">
+			AND oi.shop_code=#{query.storeCode}
+		</if>
+	</sql>
+
+	<select id="countSalesOrderItem" resultType="int">
+		SELECT COUNT(ABS(`quantity`)) FROM `crm_orderitem` oi where 1=1
+		<if test="beginDate!=null">
+			AND `payment_time` &gt; #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND `payment_time` &lt; #{endDate}
+		</if>
+		<if test="brands!=null and brands.length >0 ">
+			AND brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		<if test="query!=null">
+			<include refid="Query" />
+		</if>
+	</select>
+
+	<select id="countDeliveryOrderItem" resultType="int">
+		SELECT COUNT(ABS(`quantity`)) FROM `crm_orderitem`  oi WHERE 1=1
+		<if test="beginDate!=null">
+			AND `delivery_time` &gt; #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND `delivery_time` &lt; #{endDate}
+		</if>
+		<if test="brands!=null and brands.length >0 ">
+			AND brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		<if test="query!=null">
+			<include refid="Query" />
+		</if>
+	</select>
+
+	<select id="countCloseOrderItem" resultType="int">
+		SELECT COUNT(ABS(`quantity`)) FROM `crm_orderitem` oi WHERE 1=1 AND
+		(quantity &lt;0 OR (payment_time is not null AND status &lt;0))
+		<if test="beginDate!=null">
+			AND `close_time` &gt; #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND `close_time` &lt; #{endDate}
+		</if>
+		<if test="brands!=null and brands.length >0 ">
+			AND brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		<if test="query!=null">
+			<include refid="Query" />
+		</if>
+	</select>
+
+	<select id="findSalesOrderItem" resultMap="baseMap">
+		SELECT oi.*,p.external_sn as externalSn FROM `crm_orderitem` oi LEFT
+		JOIN crm_product p ON oi.product_sn=p.sn WHERE 1=1
+		<if test="beginDate!=null">
+			AND oi.`payment_time` &gt; #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND oi.`payment_time` &lt; #{endDate}
+		</if>
+		<if test="brands!=null and brands.length >0 ">
+			AND oi.brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		<if test="query!=null">
+			<include refid="Query" />
+		</if>
+		ORDER BY oi.create_date DESC
+		LIMIT #{page.startNumber},
+		#{page.pageSize}
+	</select>
+
+	<select id="findDeliveryOrderItem" resultMap="baseMap">
+		SELECT oi.*,p.external_sn as externalSn FROM `crm_orderitem` oi LEFT
+		JOIN crm_product p ON oi.product_sn=p.sn WHERE 1=1
+		<if test="beginDate!=null">
+			AND oi.`delivery_time` &gt; #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND oi.`delivery_time` &lt; #{endDate}
+		</if>
+		<if test="brands!=null and brands.length >0 ">
+			AND oi.brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		<if test="query!=null">
+			<include refid="Query" />
+		</if>
+		ORDER BY oi.create_date DESC
+		LIMIT #{page.startNumber},
+		#{page.pageSize}
+	</select>
+
+	<select id="findCloseOrderItem" resultMap="baseMap">
+		SELECT oi.*,p.external_sn as externalSn FROM `crm_orderitem` oi LEFT
+		JOIN crm_product p ON oi.product_sn=p.sn WHERE 1=1
+		AND (oi.quantity
+		&lt;0 OR (oi.payment_time is not null AND oi.status
+		&lt;0))
+		<if test="beginDate!=null">
+			AND oi.`close_time` &gt; #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND oi.`close_time` &lt; #{endDate}
+		</if>
+		<if test="brands!=null and brands.length >0 ">
+			AND oi.brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		<if test="query!=null">
+			<include refid="Query" />
+		</if>
+		ORDER BY oi.create_date DESC
+		LIMIT #{page.startNumber},
+		#{page.pageSize}
+	</select>
+
+	<select id="findHotProduct" resultType="string">
+		SELECT product_name FROM crm_orderitem WHERE 1=1
+		<if test="beginDate!=null">
+			AND `payment_time` &gt; #{beginDate}
+		</if>
+		<if test="endDate!=null">
+			AND `payment_time` &lt; #{endDate}
+		</if>
+		<if test="brands!=null and brands.length >0 ">
+			AND brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		GROUP BY product_sn ORDER BY count(quantity) DESC LIMIT 0,1
+	</select>
+
+	<select id="countByDay" resultType="com.d2c.boss.order.dto.DaySalesCount">
+		SELECT DATE_FORMAT(create_date,'%Y-%m-%d') as time,SUM(quantity) as
+		count FROM crm_orderitem
+		WHERE `payment_time` is NOT NULL
+		<if test="brands!=null and brands.length >0 ">
+			AND brand_code IN
+			<foreach collection="brands" index="index" item="brandCode"
+				open="(" separator="," close=")">
+				#{brandCode}
+			</foreach>
+		</if>
+		GROUP BY time ORDER BY time DESC LIMIT 0,7;
+	</select>
+</mapper>
+
+
+
+
+
+
+

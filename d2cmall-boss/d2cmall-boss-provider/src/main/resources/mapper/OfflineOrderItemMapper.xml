@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.offline.dao.OfflineOrderItemMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.offline.model.OfflineOrderItem">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="order_sn" property="orderSn" />
+        <result column="product_sn" property="productSn" />
+        <result column="product_name" property="productName"  />
+        <result column="product_img" property="productImg" />
+        <result column="leaf_category" property="leafCategory" />
+        <result column="quantity" property="quantity"  />
+        <result column="original_price" property="originalPrice" />
+        <result column="coupon_amount" property="couponAmount"  />
+        <result column="order_promotion_amount" property="orderPromotionAmount" />
+        <result column="sale_price" property="salePrice"  />
+        <result column="sale1" property="sale1" />
+        <result column="sale2" property="sale2" />
+        <result column="product_sku_sn" property="productSkuSn" />
+        <result column="brand_name" property="brandName"  />
+        <result column="brand_code" property="brandCode" />
+        <result column="shop_code" property="shopCode"  />
+        <result column="shop_name" property="shopName" /> 
+        <result column="promotion_amount" property="promotionAmount" /> 
+        <result column="up_status" property="upStatus" />
+        <result column="source_id" property="sourceId" />
+        <result column="status" property="status" />
+    </resultMap>
+   
+ 	<delete id="deleteSfOrderItem">
+ 		 DELETE FROM offline_orderitem WHERE order_sn not IN(SELECT sn FROM offline_orders)
+  	</delete>
+  	
+  	<update id="updateStatus">
+  		UPDATE offline_orderitem oi  SET oi.up_status=1 WHERE oi.up_status=0
+  	</update>
+  	
+  	<update id="updateSuccessStatus">
+ 		UPDATE offline_orderitem ot SET ot.status=8 WHERE ot.order_sn in (select o.sn from offline_orders o where o.`status`=8 and o.up_status=0) 	 
+ 	</update>
+  
+  	<update id="updateReturnStatus">
+ 	 	UPDATE offline_orderitem ot SET ot.status=-4 WHERE ot.order_sn in (select o.sn from offline_orders o where o.`status`=-4 and o.up_status=0) 	
+  	</update>
+  
+  	<update id="updateRecopyStatus">
+ 	 	UPDATE offline_orderitem ot SET ot.status=-3 WHERE ot.order_sn in (select o.sn from offline_orders o where o.`status`=-3 and o.up_status=0) 
+  	</update>
+  
+</mapper>
+
+
+
+
+
+
+

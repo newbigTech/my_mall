@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://code.alibabatech.com/schema/dubbo
+           http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	
+	<description>boss模块</description>
+	
+	<!-- member -->
+	<dubbo:service interface="com.d2c.boss.member.service.BehaviorService"
+		ref="behaviorService" />
+	<dubbo:service interface="com.d2c.boss.member.service.MemberAttentionService"
+		ref="memberAttentionService" />
+	<dubbo:service interface="com.d2c.boss.member.service.MemberCollectionService"
+		ref="memberCollectionService" />
+	<dubbo:service interface="com.d2c.boss.member.service.CommentService"
+		ref="commentService" />
+	<dubbo:service interface="com.d2c.boss.member.service.CouponService"
+		ref="couponService" />
+	<dubbo:service interface="com.d2c.boss.member.service.MemberInfoService"
+		ref="memberInfoService" />
+	<dubbo:service interface="com.d2c.boss.member.service.MemberService"
+		ref="memberService" />
+	<dubbo:service interface="com.d2c.boss.member.service.RechargeService"
+		ref="rechargeService" />
+	<dubbo:service interface="com.d2c.boss.member.service.CouponDefService"
+		ref="couponDefService" />
+	<dubbo:service interface="com.d2c.boss.online.service.OnlineMemberInfoService"
+		ref="onlineMemberInfoService" />
+	<dubbo:service interface="com.d2c.boss.online.service.OnlineMemberService"
+		ref="onlineMemberService" />
+		
+	<!-- product -->
+	<dubbo:service interface="com.d2c.boss.product.service.BrandCategoryService"
+		ref="brandCategoryService" />
+	<dubbo:service interface="com.d2c.boss.product.service.BrandService"
+		ref="brandService" />
+	<dubbo:service interface="com.d2c.boss.product.service.ProductCategoryService"
+		ref="productCategoryService" />
+	<dubbo:service interface="com.d2c.boss.product.service.ProductService"
+		ref="productService" />
+	<dubbo:service interface="com.d2c.boss.product.service.ProductSkuService"
+		ref="productSkuService" />
+	<dubbo:service interface="com.d2c.boss.product.service.ShopService"
+		ref="shopService" />
+	<dubbo:service interface="com.d2c.boss.product.service.BrandTagsService"
+		ref="brandTagsService" />
+	<dubbo:service interface="com.d2c.boss.product.service.ProductTagsService"
+		ref="productTagsService" />
+	<dubbo:service interface="com.d2c.boss.offline.service.OfflineBrandService"
+		ref="offlineBrandService" />
+	<dubbo:service interface="com.d2c.boss.online.service.OnlineBrandService"
+		ref="onlineBrandService" />
+	
+	<!-- order -->
+	<dubbo:service interface="com.d2c.boss.order.service.OrderItemService"
+		ref="orderItemService" />
+	<dubbo:service interface="com.d2c.boss.order.service.OrderService"
+		ref="orderService" />
+	<dubbo:service interface="com.d2c.boss.order.service.RefundService"
+		ref="refundService" />
+	<dubbo:service interface="com.d2c.boss.order.service.ReshipService"
+		ref="reshipService" />
+	<dubbo:service interface="com.d2c.boss.order.service.ExchangeService"
+		ref="exchangeService" />
+	<dubbo:service interface="com.d2c.boss.online.service.OnlineOrderService"
+		ref="onlineOrderService" />
+	<dubbo:service interface="com.d2c.boss.online.service.OnlineOrderItemService"
+		ref="onlineOrderItemService" />
+	<dubbo:service interface="com.d2c.boss.offline.service.OfflineOrderService"
+		ref="offlineOrderService" />
+	<dubbo:service interface="com.d2c.boss.offline.service.OfflineOrderItemService"
+		ref="offlineOrderItemService" />
+		
+	<!-- log -->
+	<dubbo:service interface="com.d2c.boss.sys.service.ApiLogService"
+		ref="apiLogService" />
+	<dubbo:service interface="com.d2c.boss.sys.service.SyncLogService"
+		ref="syncLogService" />
+		
+	<dubbo:service interface="com.d2c.boss.online.service.D2cOpenApiService"
+		ref="d2cOpenApiService" />
+
+	
+</beans>

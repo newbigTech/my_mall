@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.order.dao.OrderMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.order.model.Order">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="login_code" property="loginCode" />
+        <result column="receiver" property="receiver"  />
+        <result column="contact" property="contact" />
+        <result column="province" property="province"  />
+        <result column="city" property="city" />
+        <result column="district" property="district"  />
+        <result column="address" property="address" />
+        <result column="sn" property="sn"  />
+        <result column="source" property="source" />
+        <result column="shop_code" property="shopCode" />
+        <result column="status" property="status"  />
+        <result column="total_amount" property="totalAmount" />
+        <result column="pay_amount" property="payAmount" />
+        <result column="product_total_amount" property="productTotalAmount"  />
+        <result column="order_promotion_amount" property="orderPromotionAmount" /> 
+        <result column="product_promotion_amount" property="productPromotionAmount" />
+        <result column="coupon_amount" property="couponAmount" />
+        <result column="shipping_rates" property="shippingRates"  />
+        <result column="payment_time" property="paymentTime" /> 
+        <result column="couponed" property="couponed" /> 
+        <result column="coupon_info" property="couponInfo" />
+        <result column="success_time" property="successTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+   <select id="countOrdersByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_orders b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findOrdersByQuery" resultMap="baseMap">
+        SELECT * FROM crm_orders b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<insert id="insertOfflineOrders">
+	INSERT INTO crm_orders (
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		login_code,
+		receiver,
+		contact,
+		province,
+		city,
+		district,
+		address,
+		sn,
+		source,
+		shop_code,
+		STATUS,
+		total_amount,
+		pay_amount,
+		product_total_amount,
+		order_promotion_amount,
+		product_promotion_amount,
+		coupon_amount,
+		shipping_rates,
+		delivery_sn,
+		delivery_comp,
+		delivery_time,
+		payment_time,
+		couponed,
+		coupon_info,
+		success_time
+	) SELECT
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		login_code,
+		receiver,
+		contact,
+		province,
+		city,
+		district,
+		address,
+		sn,
+		source,
+		shop_code,
+		STATUS,
+		total_amount,
+		pay_amount,
+		product_total_amount,
+		order_promotion_amount,
+		product_promotion_amount,
+		coupon_amount,
+		shipping_rates,
+		delivery_sn,
+		delivery_comp,
+		delivery_time,
+		payment_time,
+		couponed,
+		coupon_info,
+		success_time
+	FROM
+		offline_orders
+	WHERE
+		up_status = 0
+	AND sn NOT IN(SELECT sn FROM crm_orders)
+	</insert>
+	
+	<update id="updateOfflineOrders">
+	UPDATE crm_orders o,(SELECT * FROM offline_orders  st0 WHERE st0.up_status=0) of 
+		SET o.create_date = of.create_date,
+		o.modify_date = of.modify_date,
+		o.last_modify_man = of.last_modify_man,
+		o.creator= of.creator,
+		o.login_code= of.login_code,
+		o.receiver = of.receiver,
+		o.contact= of.contact,
+		o.province= of.province,
+		o.city= of.city,
+		o.district= of.district,
+		o.address= of.address,
+		o.sn= of.sn,
+		o.source= of.source,
+		o.shop_code= of.shop_code,
+		o.status= of.status,
+		o.total_amount= of.total_amount,
+		o.pay_amount= of.pay_amount,
+		o.product_total_amount= of.product_total_amount,
+		o.order_promotion_amount= of.order_promotion_amount,
+		o.product_promotion_amount= of.product_promotion_amount,
+		o.coupon_amount= of.coupon_amount,
+		o.shipping_rates= of.shipping_rates,
+		o.delivery_sn= of.delivery_sn,
+		o.delivery_comp= of.delivery_comp,
+		o.delivery_time= of.delivery_time,
+		o.payment_time= of.payment_time,
+		o.couponed= of.couponed,
+		o.coupon_info= of.coupon_info,
+		o.success_time= of.success_time
+		WHERE o.sn=of.sn
+	</update>
+	
+	<insert id="insertOnlineOrders">
+			INSERT INTO crm_orders (
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			login_code,
+			receiver,
+			contact,
+			province,
+			city,
+			district,
+			address,
+			sn,
+			source,
+			shop_code,
+			STATUS,
+			total_amount,
+			pay_amount,
+			product_total_amount,
+			order_promotion_amount,
+			product_promotion_amount,
+			coupon_amount,
+			shipping_rates,
+			delivery_sn,
+			delivery_comp,
+			delivery_time,
+			payment_time,
+			couponed,
+			coupon_info,
+			success_time
+		) SELECT
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			login_code,
+			receiver,
+			contact,
+			province,
+			city,
+			district,
+			address,
+			sn,
+			source,
+			shop_code,
+			STATUS,
+			total_amount,
+			pay_amount,
+			product_total_amount,
+			order_promotion_amount,
+			product_promotion_amount,
+			coupon_amount,
+			shipping_rates,
+			delivery_sn,
+			delivery_comp,
+			delivery_time,
+			payment_time,
+			couponed,
+			coupon_info,
+			success_time
+		FROM
+			online_orders
+		WHERE
+			up_status = 0
+	</insert>
+	
+	<update id="updateOnlineOrders">
+		UPDATE crm_orders o,(SELECT * FROM online_orders  st0 WHERE st0.up_status=0) of 
+		SET o.create_date = of.create_date,
+		o.modify_date = of.modify_date,
+		o.last_modify_man = of.last_modify_man,
+		o.creator= of.creator,
+		o.login_code= of.login_code,
+		o.receiver = of.receiver,
+		o.contact= of.contact,
+		o.province= of.province,
+		o.city= of.city,
+		o.district= of.district,
+		o.address= of.address,
+		o.sn= of.sn,
+		o.source= of.source,
+		o.shop_code= of.shop_code,
+		o.status= of.status,
+		o.total_amount= of.total_amount,
+		o.pay_amount= of.pay_amount,
+		o.product_total_amount= of.product_total_amount,
+		o.order_promotion_amount= of.order_promotion_amount,
+		o.product_promotion_amount= of.product_promotion_amount,
+		o.coupon_amount= of.coupon_amount,
+		o.shipping_rates= of.shipping_rates,
+		o.delivery_sn= of.delivery_sn,
+		o.delivery_comp= of.delivery_comp,
+		o.delivery_time= of.delivery_time,
+		o.payment_time= of.payment_time,
+		o.couponed= of.couponed,
+		o.coupon_info= of.coupon_info,
+		o.success_time= of.success_time
+		WHERE o.sn=of.sn
+	</update>
+</mapper>
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+*.class
+
+# *.jar
+*.war
+*.ear
+
+# ignore target
+target
+
+# ignore eclipse files
+.project
+.classpath
+.settings
+.metadata

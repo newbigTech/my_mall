@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.sys.dao.ApiLogMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.sys.model.ApiLog">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="code" property="code" />
+        <result column="name" property="name"  />
+        <result column="ip" property="ip"  />
+        <result column="parameter" property="parameter" />
+        <result column="begin_date" property="beginDate" />
+        <result column="end_date" property="endDate"  />
+        <result column="num" property="num" />
+        <result column="status" property="status"  />
+        <result column="message" property="message"  />
+    </resultMap>
+
+ 
+</mapper>
+
+
+
+
+
+
+

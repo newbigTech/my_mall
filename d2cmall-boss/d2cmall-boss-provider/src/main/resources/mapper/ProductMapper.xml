@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.product.dao.ProductMapper">
+	<resultMap id="baseMap" type="com.d2c.boss.product.model.Product">
+		<id column="id" property="id" />
+		<result column="create_date" property="createDate" />
+		<result column="modify_date" property="modifyDate"  />
+		<result column="last_modify_man" property="lastModifyMan" />
+		<result column="creator" property="creator"/>
+		
+		<result column="sn" property="sn"   />
+		<result column="online_id" property="onlineId" />
+		<result column="external_sn" property="externalSn"   />
+		<result column="name" property="name" />
+		<result column="tags" property="tags" />
+		<result column="img" property="img" />
+		<result column="remark" property="remark" />
+		<result column="original_price" property="originalPrice" />
+		<result column="leaf_category" property="leafCategory"/>
+		<result column="brand_code" property="brandCode" />
+		<result column="brand_name" property="brandName" />
+		<result column="shop_code" property="shopCode" />
+		<result column="shop_name" property="shopName" />
+		
+	</resultMap>
+
+	<select id="countProductsByQuery" resultType="Integer">
+		SELECT count(*) FROM crm_product p WHERE 1=1
+		<if test="query != null">
+			<include refid="Searcher" />
+		</if>
+	</select>
+	
+	<select id="findProductBySn" resultMap="baseMap">
+		SELECT * FROM crm_product WHERE
+		product_sn=#{ProductSn}
+	</select>
+
+	<select id="findProductsByQuery" resultMap="baseMap">
+		SELECT * FROM crm_product p WHERE 1=1
+		<if test="query != null">
+			<include refid="Searcher" />
+		</if>
+			ORDER BY p.modify_date
+			LIMIT #{pager.startNumber}, #{pager.pageSize}
+	</select>
+	
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND p.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND p.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_product
+   </select>
+   
+   <update id="updateOnlineProduct">
+	   	UPDATE crm_product o,(SELECT * FROM online_product st0 WHERE st0.up_status=0) of 
+			SET o.create_date = of.create_date,
+			o.modify_date = of.modify_date,
+			o.last_modify_man = of.last_modify_man,
+			o.creator= of.creator,
+			o.sn=of.sn,
+			o.external_sn=of.external_sn,
+			o.`name`=of.name,
+			o.tags=of.tags,
+			o.img=of.img,
+			o.remark=of.remark,
+			o.original_price=of.original_price,
+			o.leaf_category=of.leaf_category,
+			o.brand_code=of.brand_code,
+			o.brand_name=of.brand_name,
+			o.online_id=of.id
+			WHERE o.sn=of.sn
+   </update>
+   <insert id="insertOnlineProduct">
+	   	INSERT INTO crm_product (
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			sn,
+			external_sn,
+			name,
+			tags,
+			img,
+			remark,
+			original_price,
+			leaf_category,
+			brand_code,
+			brand_name,
+			online_id
+		) SELECT
+				create_date,
+				modify_date,
+				last_modify_man,
+				creator,
+				sn,
+				external_sn,
+				name,
+				tags,
+				img,
+				remark,
+				original_price,
+				leaf_category,
+				brand_code,
+				brand_name,
+				id
+		FROM
+			online_product
+		WHERE
+			up_status = 0
+		AND sn NOT IN(SELECT sn FROM crm_product)
+   </insert>
+   <update id="updateOfflineProduct">
+   		UPDATE crm_product o,(SELECT * FROM offline_product st0 WHERE st0.up_status=0) of 
+			SET o.create_date = of.create_date,
+			o.modify_date = of.modify_date,
+			o.last_modify_man = of.last_modify_man,
+			o.creator= of.creator,
+			o.sn=of.sn,
+			o.external_sn=of.external_sn,
+			o.`name`=of.name,
+			o.tags=of.tags,
+			o.img=of.img,
+			o.remark=of.remark,
+			o.original_price=of.original_price,
+			o.leaf_category=of.leaf_category,
+			o.brand_code=of.brand_code,
+			o.brand_name=of.brand_name
+			WHERE o.sn=of.sn
+   </update>
+   <insert id="insertOfflineProduct">
+   	INSERT INTO crm_product (
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			sn,
+			external_sn,
+			name,
+			tags,
+			img,
+			remark,
+			original_price,
+			leaf_category,
+			brand_code,
+			brand_name
+		) SELECT
+				create_date,
+				modify_date,
+				last_modify_man,
+				creator,
+				sn,
+				external_sn,
+				name,
+				tags,
+				img,
+				remark,
+				original_price,
+				leaf_category,
+				brand_code,
+				brand_name
+		FROM
+			offline_product
+		WHERE
+			up_status = 0
+		AND sn NOT IN(SELECT sn FROM crm_product)
+   </insert>
+   
+    <update id="updateOnlineStatus">
+   		update online_product set up_status =1 where up_status=0
+   </update>
+   <update id="updateOfflineStatus">
+    	update offline_product set up_status =1 where up_status=0
+   </update>
+</mapper>

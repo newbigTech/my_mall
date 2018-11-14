@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.member.dao.BehaviorMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.member.model.Behavior">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="member_id" property="memberId"  />
+        <result column="ip" property="ip" />
+        <result column="mac" property="mac"   />
+        <result column="type" property="type" />
+        <result column="transaction_id" property="transactionId"  />
+        <result column="transaction_type" property="transactionType"  />
+        <result column="transaction_time" property="transactionTime" />
+        <result column="device" property="device"  />
+        <result column="app_version" property="appVersion" />
+        
+    </resultMap>
+
+   <select id="countBehaviorsByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_behavior b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findBehaviorsByQuery" resultMap="baseMap">
+        SELECT * FROM crm_behavior b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>
+			ORDER BY b.modify_date	
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+</mapper>
+
+
+
+
+
+
+

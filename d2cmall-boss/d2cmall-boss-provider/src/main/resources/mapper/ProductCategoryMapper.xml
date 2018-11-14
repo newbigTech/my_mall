@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.product.dao.ProductCategoryMapper">
+	<resultMap id="baseMap" type="com.d2c.boss.product.model.ProductCategory">
+		<id column="id" property="id" />
+		<result column="create_date" property="createDate" />
+		<result column="modify_date" property="modifyDate"  />
+		<result column="last_modify_man" property="lastModifyMan" />
+		<result column="creator" property="creator" />
+		
+		<result column="code" property="code"/>
+		<result column="name" property="name" />
+		<result column="parent" property="parent" />
+		<result column="depth" property="depth" />
+		<result column="status" property="status" />
+		<result column="all_code" property="allCode" />
+	</resultMap>
+	
+	<select id="countProductCategoryByQuery" resultType="Integer">
+		SELECT count(*) FROM crm_product_category p WHERE 1=1
+		<if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+	</select>
+
+	<select id="findProductCategoryByQuery" resultMap="baseMap">
+		SELECT * FROM crm_product_category p WHERE 1=1
+		<if test="query != null">
+			<include refid="Searcher" />
+		</if>
+			ORDER BY p.modify_date
+			LIMIT #{pager.startNumber}, #{pager.pageSize}
+	</select>
+	
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND p.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND p.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<delete id="delAll">
+        delete from crm_product_category
+    </delete>
+    
+     <insert id="insertToCrm">
+	INSERT INTO crm_product_category (
+			id,
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			NAME,
+			STATUS
+		) SELECT
+			id,
+			create_date,
+			modify_date,
+			last_modify_man,
+			creator,
+			NAME,
+			CASE STATUS
+		WHEN 'Y' THEN
+			1
+		ELSE
+			0
+		END AS STATUS
+		FROM
+			online_brand_tags
+		WHERE
+			up_status = 0
+		AND id NOT IN (SELECT id FROM crm_brand_tags)
+   </insert>
+   
+   <update id="updateToCrm">
+	UPDATE crm_brand_tags o,
+		 (SELECT id,create_date,modify_date,last_modify_man,creator,NAME,
+				CASE STATUS
+					WHEN 'Y' THEN
+						1
+					ELSE
+						0
+					END AS STATUS
+					FROM
+						online_brand_tags
+				WHERE
+				up_status = 0
+		) of
+		SET o.create_date = of.create_date,
+		 o.modify_date = of.modify_date,
+		 o.last_modify_man = of.last_modify_man,
+		 o.creator = of.creator,
+		 o. NAME = of. NAME,
+		 o. STATUS = of. STATUS
+		WHERE
+			o.id = of.id
+   </update>
+   <update id="upDateStatus">
+   	update online_brand_tags set up_status =1 where up_status=0
+   </update>
+    
+</mapper>

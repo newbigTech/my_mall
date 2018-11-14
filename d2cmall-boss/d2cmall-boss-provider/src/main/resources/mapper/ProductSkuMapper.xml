@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.product.dao.ProductSkuMapper">
+	<resultMap id="baseMap" type="com.d2c.boss.product.model.ProductSku">
+		<id column="id" property="id"  />
+		<result column="create_date" property="createDate"  />
+		<result column="modify_date" property="modifyDate"  />
+		<result column="last_modify_man" property="lastModifyMan"  />
+		<result column="creator" property="creator" />
+		
+		<result column="sn" property="sn" />
+		<result column="product_sn" property="productSn" />
+		<result column="sale1" property="sale1" />
+		<result column="sale2" property="sale2" />
+	</resultMap>
+	
+ 	<select id="countProductSkusByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_product_sku b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findProductSkusByQuery" resultMap="baseMap">
+        SELECT * FROM crm_product_sku b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+    
+     <select id="findProductSkusByProductSn" resultMap="baseMap">
+        SELECT * FROM crm_product_sku b WHERE b.product_sn= #{productSn}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_product_sku
+   </select>
+   
+   <update id="updateOnlineProductSku">
+   		UPDATE crm_product_sku o,(SELECT * FROM online_product_sku st0 WHERE st0.up_status=0) of 
+			SET o.create_date = of.create_date,
+			o.modify_date = of.modify_date,
+			o.last_modify_man = of.last_modify_man,
+			o.creator= of.creator,
+			o.sn=of.sn,
+			o.product_sn=of.product_sn,
+			o.sale1=of.sale1,
+			o.sale2=of.sale2
+			WHERE o.sn=of.sn
+   </update>
+   <insert id="insertOnlineProductSku">
+	   INSERT INTO crm_product_sku (
+				create_date,
+				modify_date,
+				last_modify_man,
+				creator,
+				sn,
+				product_sn,
+				sale1,
+				sale2
+			) SELECT
+					create_date,
+				modify_date,
+				last_modify_man,
+				creator,
+				sn,
+				product_sn,
+				sale1,
+				sale2
+			FROM
+				online_product_sku
+			WHERE
+				up_status = 0
+			AND sn NOT IN(SELECT sn FROM crm_product_sku)
+   </insert>
+   <update id="updateOfflineProductSku">
+   		UPDATE crm_product_sku o,(SELECT * FROM offline_product_sku st0 WHERE st0.up_status=0) of 
+			SET o.create_date = of.create_date,
+			o.modify_date = of.modify_date,
+			o.last_modify_man = of.last_modify_man,
+			o.creator= of.creator,
+			o.sn=of.sn,
+			o.product_sn=of.product_sn,
+			o.sale1=of.sale1,
+			o.sale2=of.sale2
+			WHERE o.sn=of.sn
+   </update>
+   <insert id="insertOfflineProductSku">
+   		INSERT INTO crm_product_sku (
+				create_date,
+				modify_date,
+				last_modify_man,
+				creator,
+				sn,
+				product_sn,
+				sale1,
+				sale2
+			) SELECT
+				create_date,
+				modify_date,
+				last_modify_man,
+				creator,
+				sn,
+				product_sn,
+				sale1,
+				sale2
+			FROM
+				offline_product_sku
+			WHERE
+				up_status = 0
+			AND sn NOT IN(SELECT sn FROM crm_product_sku)
+   </insert>
+   
+   <update id="updateOnlineStatus">
+   		update online_product_sku set up_status =1 where up_status=0
+   </update>
+   <update id="updateOfflineStatus">
+    	update offline_product_sku set up_status =1 where up_status=0
+   </update>
+</mapper>

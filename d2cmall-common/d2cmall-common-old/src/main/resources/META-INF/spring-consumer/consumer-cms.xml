@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - Copyright 1999-2011 Alibaba Group. - - Licensed under the Apache License, 
+	Version 2.0 (the "License"); - you may not use this file except in compliance 
+	with the License. - You may obtain a copy of the License at - - http://www.apache.org/licenses/LICENSE-2.0 
+	- - Unless required by applicable law or agreed to in writing, software - 
+	distributed under the License is distributed on an "AS IS" BASIS, - WITHOUT 
+	WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. - See the 
+	License for the specific language governing permissions and - limitations 
+	under the License. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<description>CMS模块</description>
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.AppMenuService"
+		id="appMenuService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.AppVersionService"
+		id="appVersionService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ArticleCateService"
+		id="articleCateService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ArticleService"
+		id="articleService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.BrandApplyService"
+		id="brandApplyService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.FieldContentService"
+		id="fieldContentService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.FieldDefineService"
+		id="fieldDefineService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.PageContentService"
+		id="pageContentService" >
+		<dubbo:method name="doPublish" timeout="60000" />
+	</dubbo:reference>
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.PageDefineService"
+		id="pageDefineService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.NavigationItemService"
+		id="navigationItemService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.NavigationService"
+		id="navigationService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.SectionService"
+		id="sectionService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.SectionValueService"
+		id="sectionValueService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.SubModuleQueryService"
+		id="subModuleQueryService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.SubModuleService"
+		id="subModuleService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.SubscribeService"
+		id="subscribeService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.SplashScreenService"
+		id="splashScreenService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.SensitiveWordsService"
+		id="sensitiveWordsService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.FeedBackService"
+		id="feedBackService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.IpBlackService"
+		id="ipBlackService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.QuizBankService"
+		id="quizBankService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.VoteDefService"
+		id="voteDefService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.VoteItemService"
+		id="voteItemService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.VoteSelectionService"
+		id="voteSelectionService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ThemeService"
+		id="themeService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ThemeTagService"
+		id="themeTagService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.AdResourceService"
+		id="adResourceService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ProductReportService"
+		id="productReportService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ShareTaskClickService"
+		id="shareTaskClickService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ShareTaskDefService"
+		id="shareTaskDefService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.ShareTaskService"
+		id="shareTaskService" />
+	<dubbo:reference version="${cms.version:${version}}" interface="com.d2c.cms.service.AppNavigationService"
+		id="appNavigationService" />
+						
+</beans>

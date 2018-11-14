@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.member.dao.MemberInfoMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.member.model.MemberInfo">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="login_code" property="loginCode" />
+        <result column="online_id" property="onlineId"  />
+        <result column="type" property="type"  />
+        <result column="mobile" property="mobile" />
+        <result column="nickname" property="nickname"  />
+        <result column="name" property="name"  />
+        <result column="sex" property="sex"  />
+        <result column="province" property="province" />
+        <result column="city" property="city"  />
+        <result column="district" property="district" />
+        <result column="street" property="street"  />
+        <result column="birthday" property="birthday" />
+        <result column="weixin" property="weixin"  />
+        <result column="qq" property="qq"  />
+        <result column="email" property="email" />
+        <result column="head_pic" property="headPic" />
+        <result column="height" property="height" />
+        <result column="weight" property="weight" />
+        <result column="chest" property="chest"  />
+        <result column="waistline" property="waistline" />
+        <result column="hipline" property="hipline"  />
+        <result column="foot_length" property="footLength" />
+        <result column="source" property="source" />
+        <result column="shop_code" property="shopCode"  />      
+        <result column="referee" property="referee" />
+    </resultMap>
+
+   <select id="countMemberInfosByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_memberinfo b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findMemberInfosByQuery" resultMap="baseMap">
+        SELECT * FROM crm_memberinfo b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<update id="updateIos">
+		update online_memberinfo set source = 'IOS' where up_status=0 and (source like '%IOS%' or source like '%Ios%' )
+	</update>
+	<update id="updateAndroid">
+		update online_memberinfo set source = 'Android' where up_status=0 and (source like '%ANDROID%' or source like '%Android%' )
+	</update>
+	<update id="updatePc">
+		update online_memberinfo set source = 'PC' where up_status=0 and source is null
+	</update>
+	<update id="updateOnlineStatus">
+		update online_memberinfo set up_status = 1 where up_status=0 
+	</update>
+	<update id="updateOfflineStatus">
+		update offline_memberinfo set up_status = 1 where up_status=0 
+	</update>
+	
+	<insert id="insertOnlineMemberInfo">	
+		replace into crm_memberinfo
+				(create_date,modify_date,creator,login_code,online_id,
+		type,mobile,nickname,name,province,city,district,street,birthday,
+		weixin,qq,email,head_pic,height,weight,chest,waistline,hipline,
+		foot_length,source,shop_code,referee)
+				SELECT create_date,modify_date,creator,login_code,online_id,
+		type,mobile,nickname,name,province,city,district,street,birthday,
+		weixin,qq,email,head_pic,height,weight,chest,waistline,hipline,
+		foot_length,source,shop_code,referee from online_memberinfo where up_status=0
+	</insert>
+	
+	<insert id="insertOfflineMemberInfo">	
+		replace into crm_memberinfo
+	(create_date,modify_date,login_code,type,mobile,name,bind_mobile,source,shop_code)
+	SELECT create_date,modify_date,login_code,type,mobile,name,bind_mobile,source,shop_code from offline_memberinfo where up_status=0
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+

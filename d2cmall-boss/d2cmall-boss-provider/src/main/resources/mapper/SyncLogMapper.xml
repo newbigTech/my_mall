@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.sys.dao.SyncLogMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.sys.model.SyncLog">
+        <id column="id" property="id" />
+        <result column="create_time_" property="createDate" />
+        <result column="last_modify_" property="modifyDate"  />
+        
+        <result column="sync_type_" property="type" />
+        <result column="buz_begin_time_" property="buzBeginTime"  />
+        <result column="buz_end_time_" property="buzEndTime"  />
+        <result column="sync_begin_time_" property="syncBeginTime" />
+        <result column="sync_end_time_" property="syncEndTime" />
+        <result column="state_" property="state"  />
+        <result column="fail_reason_" property="failReason" />
+        <result column="interval_" property="interval"  />
+        <result column="desc_" property="description"  />
+        <result column="status_" property="status"  />
+    </resultMap>
+
+ 	<insert id="refreshLog">
+ 		REPLACE INTO sys_sync_log(id,create_time_,sync_begin_time_,status_,sync_type_,interval_)
+ 		 VALUES(uuid(),now(),now(),#{log.status},#{log.type},#{log.interval_})
+ 	</insert>
+ 	
+ 	<select id="findStatusBySyncType" resultType="Integer">
+ 		SELECT status_ FROM sys_sync_log WHERE sync_type_ = #{syncType}
+ 	</select>
+</mapper>
+
+
+
+
+
+
+

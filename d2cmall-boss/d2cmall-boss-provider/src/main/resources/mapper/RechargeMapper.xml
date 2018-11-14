@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.member.dao.RechargeMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.member.model.Recharge">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="sn" property="sn" />
+        <result column="login_code" property="loginCode" />
+        <result column="recharge_amount" property="rechargeAmount" />
+        <result column="gift_amount" property="giftAmount" />
+        <result column="rule_name" property="ruleName" />
+        <result column="pay_date" property="payDate"/>
+        <result column="pay_type" property="payType" />
+        <result column="status" property="status" />
+    </resultMap>
+
+   <select id="countRechargesByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_recharge b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findRechargesByQuery" resultMap="baseMap">
+        SELECT * FROM crm_recharge b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_recharge
+   </select>
+</mapper>
+
+
+
+
+
+
+

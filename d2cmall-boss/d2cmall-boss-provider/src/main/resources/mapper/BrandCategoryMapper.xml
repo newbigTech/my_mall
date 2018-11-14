@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.product.dao.BrandCategoryMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.product.model.BrandCategory">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="parent" property="parent" />
+        <result column="depth" property="depth" />
+
+        
+    </resultMap>
+
+   <select id="countBrandCategorysByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_brand_category b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findBrandCategorysByQuery" resultMap="baseMap">
+        SELECT * FROM crm_brand_category b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>
+			ORDER BY b.modify_date	
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+</mapper>
+
+
+
+
+
+
+

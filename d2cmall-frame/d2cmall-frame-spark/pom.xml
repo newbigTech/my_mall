@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>d2cmall-frame</artifactId>
+		<groupId>com.d2c</groupId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>d2cmall-frame-spark</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.finalname>d2cmall-frame-spark</project.finalname>
+		<booter.class>com.d2c.frame.spark.Launcher</booter.class>
+		<spark_scope>provided</spark_scope>
+
+		<spark_scala_version>2.11</spark_scala_version>
+		<spark_version>2.2.0</spark_version>
+		<hadoop_version>2.7.3</hadoop_version>
+	</properties>
+
+	<dependencies>
+
+		<!-- project start -->
+		<dependency>
+			<groupId>com.d2c</groupId>
+			<artifactId>d2cmall-common-core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.d2c</groupId>
+			<artifactId>d2cmall-common-mq</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.d2c</groupId>
+			<artifactId>d2cmall-common-mongodb</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.d2c</groupId>
+			<artifactId>d2cmall-frame-provider</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<!-- project end -->
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>0.11.0.2</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- spark thirds -->
+		<dependency>
+			<groupId>org.mongodb.spark</groupId>
+			<artifactId>mongo-spark-connector_${spark_scala_version}</artifactId>
+			<version>${spark_version}</version>
+		</dependency>
+
+		<!-- spark -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-scala_${spark_scala_version}</artifactId>
+			<version>${jackson_core_version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_${spark_scala_version}</artifactId>
+			<version>${spark_version}</version>
+			<scope>${spark_scope}</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_${spark_scala_version}</artifactId>
+			<version>${spark_version}</version>
+			<scope>${spark_scope}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-sql_${spark_scala_version}</artifactId>
+			<version>${spark_version}</version>
+			<scope>${spark_scope}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-mllib_${spark_scala_version}</artifactId>
+			<version>${spark_version}</version>
+			<scope>${spark_scope}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-launcher_${spark_scala_version}</artifactId>
+			<version>${spark_version}</version>
+			<scope>${spark_scope}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming-kafka-0-10_${spark_scala_version}</artifactId>
+			<version>${spark_version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>${hadoop_version}</version>
+			<scope>${spark_scope}</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+</project>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.online.dao.OnlineOrderMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.online.model.OnlineOrder">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="login_code" property="loginCode" />
+        <result column="receiver" property="receiver"  />
+        <result column="contact" property="contact" />
+        <result column="province" property="province"  />
+        <result column="city" property="city" />
+        <result column="district" property="district"  />
+        <result column="address" property="address" />
+        <result column="sn" property="sn"  />
+        <result column="source" property="source" />
+        <result column="shop_code" property="shopCode" />
+        <result column="status" property="status"  />
+        <result column="total_amount" property="totalAmount" />
+        <result column="pay_amount" property="payAmount" />
+        <result column="product_total_amount" property="productTotalAmount"  />
+        <result column="order_promotion_amount" property="orderPromotionAmount" /> 
+        <result column="product_promotion_amount" property="productPromotionAmount" />
+        <result column="coupon_amount" property="couponAmount" />
+        <result column="shipping_rates" property="shippingRates"  />
+        <result column="delivery_sn" property="deliverySn" />
+        <result column="delivery_comp" property="deliveryComp"  />
+        <result column="delivery_time" property="deliveryTime" />
+        <result column="payment_time" property="paymentTime" /> 
+        <result column="couponed" property="couponed" /> 
+        <result column="coupon_info" property="couponInfo" />
+        <result column="success_time" property="successTime" />
+        <result column="up_status" property="upStatus" />
+        <result column="member_id" property="memberId" />
+        <result column="buyer_memo" property="buyerMemo" />
+        <result column="seller_memo" property="sellerMemo" />
+    </resultMap>
+
+   <select id="countOrdersByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_orders b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findOrdersByQuery" resultMap="baseMap">
+        SELECT * FROM crm_orders b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+        <if test="pager != null">
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+        </if>
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from online_orders
+   </select>
+   
+   <select id="findByOrderSn" resultMap="baseMap">
+      select * from online_orders where sn=#{orderSn} limit 0,1
+   </select>
+   
+   <update id="updateStatus">
+   		update online_orders set up_status=#{newStatus} where up_status=#{oldStatus} 
+   </update>
+   
+    <update id="upStatusByOrderSn">
+   		update online_orders set up_status=#{status} where sn=#{orderSn} 
+   </update>
+   
+   <insert id="insertToOrders">
+	   INSERT INTO temp_orders (
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		login_code,
+		receiver,
+		contact,
+		province,
+		city,
+		district,
+		address,
+		sn,
+		source,
+		shop_code,
+		STATUS,
+		total_amount,
+		pay_amount,
+		product_total_amount,
+		order_promotion_amount,
+		product_promotion_amount,
+		coupon_amount,
+		shipping_rates,
+		delivery_sn,
+		delivery_comp,
+		delivery_time,
+		payment_time,
+		couponed,
+		coupon_info,
+		success_time
+	) SELECT
+		create_date,
+		modify_date,
+		last_modify_man,
+		creator,
+		login_code,
+		receiver,
+		contact,
+		province,
+		city,
+		district,
+		address,
+		sn,
+		source,
+		shop_code,
+		STATUS,
+		total_amount,
+		pay_amount,
+		product_total_amount,
+		order_promotion_amount,
+		product_promotion_amount,
+		coupon_amount,
+		shipping_rates,
+		delivery_sn,
+		delivery_comp,
+		delivery_time,
+		payment_time,
+		couponed,
+		coupon_info,
+		success_time
+	FROM
+		online_orders
+	WHERE
+		up_status = 1
+   </insert>
+   
+   <select id="countModifyOnlineOrders" resultType="Integer">
+      select count(*) from online_orders where up_status = 2 
+   </select>
+   
+   <select id="findModifyOnlineOrders" resultMap="baseMap">
+      select * from online_orders where up_status = 2 
+      LIMIT #{pager.startNumber}, #{pager.pageSize}
+   </select>  
+   
+   <update id="updateSourceNull">
+   		update online_orders set source = 'PC' where source is null and up_status=0
+   </update>
+   <update id="updateSourceIos">
+  		update online_orders set source = 'IOS' where up_status=0 and source = 'APPIOS'
+   </update>
+   <update id="updateSourceAndroid">
+   		update online_orders set source = 'ANDROID' where up_status=0 and source = 'APPANDROID'
+   </update>
+</mapper>
+
+
+
+
+
+
+

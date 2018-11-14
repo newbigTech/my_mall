@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.offline.dao.OfflineBrandMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.offline.model.OfflineBrand">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="code" property="code" />
+        <result column="name" property="name"  />
+        <result column="designer" property="designer"  />
+        <result column="country" property="country" />
+        <result column="shop" property="shop"  />
+        <result column="description" property="description" />
+        <result column="top_category" property="topCategory"  />
+        <result column="sec_category" property="secCategory" />
+        <result column="page_group" property="pageGroup" />
+        <result column="tags" property="tags"  />
+        <result column="up_status" property="upStatus"  />
+    </resultMap>
+
+    <update id="updateStatus">
+   		update offline_brand set up_status=1 where up_status=0 
+   </update>
+   
+</mapper>
+
+
+
+
+
+
+

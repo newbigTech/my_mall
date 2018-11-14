@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.order.dao.ExchangeMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.order.model.Exchange">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="sn" property="sn" />
+        <result column="login_code" property="loginCode" />
+        <result column="status" property="status"  />    
+        <result column="order_sn" property="orderSn"  />
+        <result column="reason" property="reason" />
+        <result column="memo" property="memo" />
+        <result column="quantity" property="quantity" />
+        <result column="product_sn" property="productSn"  />
+        <result column="product_sku_sn" property="productSkuSn" />
+        <result column="apply_amount" property="applyAmount" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="pay_amount" property="payAmount" />
+        <result column="brand_name" property="brandName"  />
+        <result column="brand_code" property="brandCode" />
+        
+    </resultMap>
+
+   <select id="countExchangesByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_exchange b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findExchangesByQuery" resultMap="baseMap">
+        SELECT * FROM crm_exchange b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_exchange
+   </select>
+   
+</mapper>
+
+
+
+
+
+
+

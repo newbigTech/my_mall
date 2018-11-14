@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.offline.dao.OfflineOrderMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.offline.model.OfflineOrder">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="login_code" property="loginCode" />
+        <result column="receiver" property="receiver"  />
+        <result column="contact" property="contact" />
+        <result column="province" property="province"  />
+        <result column="city" property="city" />
+        <result column="district" property="district"  />
+        <result column="address" property="address" />
+        <result column="sn" property="sn"  />
+        <result column="source" property="source" />
+        <result column="shop_code" property="shopCode" />
+        <result column="status" property="status"  />
+        <result column="total_amount" property="totalAmount" />
+        <result column="pay_amount" property="payAmount" />
+        <result column="product_total_amount" property="productTotalAmount"  />
+        <result column="order_promotion_amount" property="orderPromotionAmount" /> 
+        <result column="product_promotion_amount" property="productPromotionAmount" />
+        <result column="coupon_amount" property="couponAmount" />
+        <result column="shipping_rates" property="shippingRates"  />
+        <result column="delivery_sn" property="deliverySn" />
+        <result column="delivery_comp" property="deliveryComp"  />
+        <result column="delivery_time" property="deliveryTime" />
+        <result column="payment_time" property="paymentTime" /> 
+        <result column="couponed" property="couponed" /> 
+        <result column="coupon_info" property="couponInfo" />
+        <result column="success_time" property="successTime" /> 
+        <result column="return_status" property="returnStatus"  />
+        <result column="recopy_status" property="recopyStatus" />
+        <result column="recopy_date" property="recopyDate"  />
+        <result column="is_active" property="isActive" />     
+        <result column="up_status" property="upStatus" />
+    </resultMap>
+
+  <update id="updateSuccessStatus">
+ 	 UPDATE offline_orders SET status=8 WHERE recopy_status='1' AND return_status='N'
+  </update>
+  
+  <update id="updateReturnStatus">
+ 	 UPDATE offline_orders SET status=-4 WHERE  return_status='Y'
+  </update>
+  
+  <update id="updateRecopyStatus">
+ 	 UPDATE offline_orders SET status=-3 WHERE recopy_status='2' 
+  </update>
+  
+  <delete id="deleteSfOrder">
+ 	 DELETE FROM offline_orders WHERE shop_code='003' AND (status &lt;&gt;-4 OR status IS NULL)
+  </delete>
+  
+   <update id="updateStatus">
+ 	 UPDATE offline_orders SET up_status=1 WHERE up_status=0
+  </update>
+</mapper>
+
+
+
+
+
+
+

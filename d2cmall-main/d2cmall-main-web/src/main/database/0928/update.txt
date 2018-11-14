@@ -1,0 +1,17 @@
+ALTER TABLE `p_promotion`
+ADD COLUMN `price_back_pic`  varchar(180) NULL COMMENT '价格背景图片' AFTER `brand_pic`;
+
+ALTER TABLE `o_statement_item`
+ADD COLUMN `pop`  int(2) NULL COMMENT 'pop占单' AFTER `order_type`;
+
+UPDATE orderitem oi, o_statement_item si SET si.pop=oi.pop WHERE oi.id=si.order_item_id;
+
+ALTER TABLE `o_partner_gift`
+ADD COLUMN `product_name`  varchar(190) NULL COMMENT '商品名称' AFTER `master_rebate`,
+ADD COLUMN `product_pic`  varchar(190) NULL COMMENT '商品图片' AFTER `product_name`,
+ADD COLUMN `login_code`  varchar(90) NULL COMMENT '买家账号' AFTER `product_pic`;
+
+ALTER TABLE `m_partner`
+ADD COLUMN `path`  varchar(255) NULL COMMENT '邀请人路径' AFTER `parent_id`;
+
+

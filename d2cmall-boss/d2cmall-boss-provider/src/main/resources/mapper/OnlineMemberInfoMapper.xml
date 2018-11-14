@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.online.dao.OnlineMemberInfoMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.online.model.OnlineMemberInfo">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="login_code" property="loginCode" />
+        <result column="type" property="type"  />
+        <result column="mobile" property="mobile" />
+        <result column="nickname" property="nickname"  />
+        <result column="name" property="name"  />
+        <result column="province" property="province" />
+        <result column="city" property="city"  />
+        <result column="district" property="district" />
+        <result column="street" property="street"  />
+        <result column="birthday" property="birthday" />
+        <result column="weixin" property="weixin"  />
+        <result column="qq" property="qq"  />
+        <result column="email" property="email" />
+        <result column="head_pic" property="headPic" />
+        <result column="height" property="height" />
+        <result column="weight" property="weight" />
+        <result column="chest" property="chest"  />
+        <result column="waistline" property="waistline" />
+        <result column="hipline" property="hipline"  />
+        <result column="foot_length" property="footLength" />
+        <result column="source" property="source" />
+        <result column="shop_code" property="shopCode"  />      
+        <result column="referee" property="referee" />
+        <result column="up_status" property="upStatus" />
+    </resultMap>
+
+   <select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from online_memberinfo
+   </select>
+</mapper>
+
+
+
+
+
+
+

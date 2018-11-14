@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.product.dao.ShopMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.product.model.Shop">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate"  />
+        <result column="last_modify_man" property="lastModifyMan" />
+        <result column="creator" property="creator" />
+        
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="address" property="address"  />
+        <result column="startHour" property="startHour" />
+        <result column="startMinute" property="startMinute" />
+        <result column="endHour" property="endHour"  />
+        <result column="endMinute" property="endMinute" />
+        <result column="storeService" property="storeService" />
+        <result column="tel" property="tel" />
+        <result column="linker" property="linker"  />
+        <result column="bdxy" property="bdxy" />
+        <result column="description" property="description" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="district" property="district" />
+        <result column="status" property="status" />
+    </resultMap>
+
+   <select id="countShopsByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_shop s WHERE 1=1
+	   	<if test="query != null">
+			<include refid="Searcher" />
+		</if>
+   </select>
+
+    <select id="findShopsByQuery" resultMap="baseMap">
+        SELECT * FROM crm_shop s WHERE 1=1
+      	<if test="query != null">
+			<include refid="Searcher" />
+		</if>
+			ORDER BY s.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+    
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND s.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND s.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_shop
+   </select>
+   
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

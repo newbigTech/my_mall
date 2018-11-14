@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.d2c.boss.member.dao.CommentMapper">
+    <resultMap id="baseMap" type="com.d2c.boss.member.model.Comment">
+        <id column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate" />
+        <result column="last_modify_man" property="lastModifyMan"  />
+        <result column="creator" property="creator"/>
+        
+        <result column="login_code" property="loginCode" />
+        <result column="head_pic" property="headPic"  />
+        <result column="content" property="content" />
+        <result column="pic" property="pic" />
+        <result column="product_sn" property="productSn" />
+        <result column="sales_property" property="salesProperty" />
+        <result column="product_score" property="productScore" />
+        <result column="package_score" property="packageScore" />
+        <result column="delivery_speed_score" property="deliverySpeedScore"/>
+        <result column="delivery_service_score" property="deliveryServiceScore" />
+        <result column="device" property="device" />
+        <result column="app_version" property="appVersion"/>
+
+        
+    </resultMap>
+
+   <select id="countCommentsByQuery" resultType="Integer">
+       SELECT count(*) FROM crm_comment b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>		
+   </select>
+
+    <select id="findCommentsByQuery" resultMap="baseMap">
+        SELECT * FROM crm_comment b WHERE 1=1
+        <if test="query != null">
+			<include refid="Searcher" />
+		</if>	
+			ORDER BY b.modify_date
+            LIMIT #{pager.startNumber}, #{pager.pageSize}
+    </select>
+
+	<sql id="Searcher">
+		<if test="query != null">		
+			<if test="query.startModifyTime != null">
+				AND b.modify_date &gt; #{query.startModifyTime}
+			</if>
+			<if test="query.endModifyTime != null">
+				AND b.modify_date &lt; #{query.endModifyTime}
+			</if>
+		</if>
+	</sql>
+	
+	<select id="getLastSysDate" resultType="Date">
+      select max(modify_date) from crm_comment
+   </select>
+</mapper>
+
+
+
+
+
+
+
