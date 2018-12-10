@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.d2c.frame.provider.config.ElasticSearchConfig;
 import com.d2c.msg.search.model.SearcherMemberSum;
-import com.d2c.util.string.PinYinUtil;
 
 @Service(protocol = "dubbo")
 public class SearchKeySearcherServiceImpl implements SearchKeySearcherService {
@@ -35,18 +34,18 @@ public class SearchKeySearcherServiceImpl implements SearchKeySearcherService {
 	public int insert(SearcherMemberSum searchSum, Integer mark) {
 
 		// 如果是非上架状态不建立索引
-		if (searchSum == null)
-			return 0;
-
-		insertElastic(searchSum, mark);
-
-		String keyword = searchSum.getKeyword();
-		if (PinYinUtil.containChinese(keyword)) {
-			searchSum.setKeyword(PinYinUtil.getFirstSpell(keyword).toLowerCase());
-			insertElastic(searchSum, mark);
-			searchSum.setKeyword(PinYinUtil.getFullSpell(keyword).toLowerCase());
-			insertElastic(searchSum, mark);
-		}
+//		if (searchSum == null)
+//			return 0;
+//
+//		insertElastic(searchSum, mark);
+//
+//		String keyword = searchSum.getKeyword();
+//		if (PinYinUtil.containChinese(keyword)) {
+//			searchSum.setKeyword(PinYinUtil.getFirstSpell(keyword).toLowerCase());
+//			insertElastic(searchSum, mark);
+//			searchSum.setKeyword(PinYinUtil.getFullSpell(keyword).toLowerCase());
+//			insertElastic(searchSum, mark);
+//		}
 		return 1;
 	}
 
@@ -77,12 +76,12 @@ public class SearchKeySearcherServiceImpl implements SearchKeySearcherService {
 	@Override
 	public Set<String> search(String keywords) {
 		QueryBuilder qb;
-		if (PinYinUtil.containChinese(keywords)) {
-			qb = QueryBuilders.multiMatchQuery(keywords, "keyword^1", "displayName^1").analyzer("ik")
-					.minimumShouldMatch("10").boost(1);
-		} else {
+//		if (PinYinUtil.containChinese(keywords)) {
+//			qb = QueryBuilders.multiMatchQuery(keywords, "keyword^1", "displayName^1").analyzer("ik")
+//					.minimumShouldMatch("10").boost(1);
+//		} else {
 			qb = QueryBuilders.prefixQuery("keyword", keywords);
-		}
+//		}
 		SearchRequestBuilder builder = elasticSearchConfig.getClient().prepareSearch(ElasticSearchConfig.INDEX_NAME)
 				.setTypes(TYPE_SEACHER).setSearchType(SearchType.DEFAULT).setQuery(qb);
 		builder.addSort("sort", SortOrder.DESC);

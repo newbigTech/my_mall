@@ -47,88 +47,88 @@ public class HttpUtil {
 	 * @param xml
 	 * @return
 	 */
-	public static String sendPostHttps(String url, Map<String, Object> params, Integer timeOut) {
-		HttpPost post = null;
-		CloseableHttpClient client = null;
-		try {
-			client = SSLUtil.createSSLClientDefault();
-			// client = WebClientDevWrapper.wrapClient(client);
-			post = new HttpPost(url);
-			if (timeOut != null) {
-				RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(timeOut)
-						.setConnectTimeout(timeOut).setConnectionRequestTimeout(timeOut)
-						.setStaleConnectionCheckEnabled(true).build();
-				post.setConfig(defaultRequestConfig);
-			}
-			// 设置参数
-			List<BasicNameValuePair> list = new ArrayList<>();
-			Iterator<Entry<String, Object>> iterator = params.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Entry<String, Object> elem = iterator.next();
-				list.add(new BasicNameValuePair(elem.getKey(), String.valueOf(elem.getValue())));
-			}
-			if (list.size() > 0) {
-				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list, "utf-8");
-				post.setEntity(entity);
-			}
-			HttpResponse response = client.execute(post);
-			if (response.getStatusLine().getStatusCode() == 200) {
-				HttpEntity resEntity = response.getEntity();
-				return EntityUtils.toString(resEntity, "utf-8");
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		} finally {
-			post.releaseConnection();
-			if (client != null) {
-				try {
-					client.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * HTTPS POST XML请求
-	 * 
-	 * @param url
-	 * @param xml
-	 * @return
-	 */
-	public static String sendPostXmlHttps(String url, String xml) {
-		HttpPost post = null;
-		CloseableHttpClient client = null;
-		try {
-			client = SSLUtil.createSSLClientDefault();
-			// client = WebClientDevWrapper.wrapClient(client);
-			post = new HttpPost(url);
-			StringEntity myEntity = new StringEntity(xml, "utf-8");
-			post.addHeader("Content-Type", "text/xml");
-			post.setEntity(myEntity);
-			HttpResponse response = client.execute(post);
-			if (response.getStatusLine().getStatusCode() == 200) {
-				HttpEntity resEntity = response.getEntity();
-				return EntityUtils.toString(resEntity, "utf-8");
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		} finally {
-			post.releaseConnection();
-			if (client != null) {
-				try {
-					client.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
+//	public static String sendPostHttps(String url, Map<String, Object> params, Integer timeOut) {
+//		HttpPost post = null;
+//		CloseableHttpClient client = null;
+//		try {
+//			client = SSLUtil.createSSLClientDefault();
+//			// client = WebClientDevWrapper.wrapClient(client);
+//			post = new HttpPost(url);
+//			if (timeOut != null) {
+//				RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(timeOut)
+//						.setConnectTimeout(timeOut).setConnectionRequestTimeout(timeOut)
+//						.setStaleConnectionCheckEnabled(true).build();
+//				post.setConfig(defaultRequestConfig);
+//			}
+//			// 设置参数
+//			List<BasicNameValuePair> list = new ArrayList<>();
+//			Iterator<Entry<String, Object>> iterator = params.entrySet().iterator();
+//			while (iterator.hasNext()) {
+//				Entry<String, Object> elem = iterator.next();
+//				list.add(new BasicNameValuePair(elem.getKey(), String.valueOf(elem.getValue())));
+//			}
+//			if (list.size() > 0) {
+//				UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list, "utf-8");
+//				post.setEntity(entity);
+//			}
+//			HttpResponse response = client.execute(post);
+//			if (response.getStatusLine().getStatusCode() == 200) {
+//				HttpEntity resEntity = response.getEntity();
+//				return EntityUtils.toString(resEntity, "utf-8");
+//			}
+//		} catch (Exception e) {
+//			logger.error(e.getMessage());
+//		} finally {
+//			post.releaseConnection();
+//			if (client != null) {
+//				try {
+//					client.close();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return null;
+//	}
+//
+//	/**
+//	 * HTTPS POST XML请求
+//	 * 
+//	 * @param url
+//	 * @param xml
+//	 * @return
+//	 */
+//	public static String sendPostXmlHttps(String url, String xml) {
+//		HttpPost post = null;
+//		CloseableHttpClient client = null;
+//		try {
+//			client = SSLUtil.createSSLClientDefault();
+//			// client = WebClientDevWrapper.wrapClient(client);
+//			post = new HttpPost(url);
+//			StringEntity myEntity = new StringEntity(xml, "utf-8");
+//			post.addHeader("Content-Type", "text/xml");
+//			post.setEntity(myEntity);
+//			HttpResponse response = client.execute(post);
+//			if (response.getStatusLine().getStatusCode() == 200) {
+//				HttpEntity resEntity = response.getEntity();
+//				return EntityUtils.toString(resEntity, "utf-8");
+//			}
+//		} catch (Exception e) {
+//			logger.error(e.getMessage());
+//		} finally {
+//			post.releaseConnection();
+//			if (client != null) {
+//				try {
+//					client.close();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return null;
+//	}
 
 	/**
 	 * 解析出url请求的路径，包括页面

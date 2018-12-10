@@ -42,7 +42,6 @@ import com.d2c.product.model.Brand;
 import com.d2c.product.service.BrandService;
 import com.d2c.util.date.DateUtil;
 import com.d2c.util.file.CSVUtil;
-import com.d2c.util.http.HttpUtil;
 
 @RestController
 @RequestMapping("/rest/report/designer")
@@ -323,25 +322,25 @@ public class DesignerReportCtrl extends BaseCtrl<BaseQuery> {
 		HttpHeaders headers = new HttpHeaders();
 		MediaType mediaType = MediaType.parseMediaType("application/json; charset=UTF-8");
 		headers.setContentType(mediaType);
-		JSONObject countJson = JSON.parseObject(HttpUtil.sendPostHttps(
-				httpProperties.getBossApiUrl() + "/api/crm/orderitem/" + type + "/count" + "?brands=" + brandsParam
-						+ "&beginDate=" + beginDateTime + "&endDate=" + endDateTime,
-				new HashMap<String, Object>(), null));
-		pager.setTotalCount(countJson.getJSONObject("datas").getInteger(type + "Count"));
-		boolean exportSuccess = true;
-		do {
-			page.setPageNumber(pagerNumber);
-			JSONObject json = JSON.parseObject(HttpUtil.sendPostHttps( // 分页查询数据
-					httpProperties.getBossApiUrl() + "/api/crm/orderitem/" + type + "/list" + "?brands=" + brandsParam
-							+ "&beginDate=" + beginDateTime + "&endDate=" + endDateTime + "&pageSize="
-							+ page.getPageSize() + "&p=" + page.getP(),
-					new HashMap<String, Object>(), null));
-
-			List<Map<String, Object>> list = getRowList(
-					json.getJSONObject("datas").getJSONObject("pager").getJSONArray("list"), type);
-			exportSuccess = csvUtil.writeRowToFile(list);
-			pagerNumber = pagerNumber + 1;
-		} while (pagerNumber <= pager.getPageCount() && exportSuccess);
+//		JSONObject countJson = JSON.parseObject(HttpUtil.sendPostHttps(
+//				httpProperties.getBossApiUrl() + "/api/crm/orderitem/" + type + "/count" + "?brands=" + brandsParam
+//						+ "&beginDate=" + beginDateTime + "&endDate=" + endDateTime,
+//				new HashMap<String, Object>(), null));
+//		pager.setTotalCount(countJson.getJSONObject("datas").getInteger(type + "Count"));
+//		boolean exportSuccess = true;
+//		do {
+//			page.setPageNumber(pagerNumber);
+//			JSONObject json = JSON.parseObject(HttpUtil.sendPostHttps( // 分页查询数据
+//					httpProperties.getBossApiUrl() + "/api/crm/orderitem/" + type + "/list" + "?brands=" + brandsParam
+//							+ "&beginDate=" + beginDateTime + "&endDate=" + endDateTime + "&pageSize="
+//							+ page.getPageSize() + "&p=" + page.getP(),
+//					new HashMap<String, Object>(), null));
+//
+//			List<Map<String, Object>> list = getRowList(
+//					json.getJSONObject("datas").getJSONObject("pager").getJSONArray("list"), type);
+//			exportSuccess = csvUtil.writeRowToFile(list);
+//			pagerNumber = pagerNumber + 1;
+//		} while (pagerNumber <= pager.getPageCount() && exportSuccess);
 		createExcelResult(result, csvUtil.getErrorMsg(), csvUtil.getOutPath());
 		saveLog(csvUtil.getFileName(), csvUtil.getOutPath(), csvUtil.getFileSize(), this.getExportFileType());
 		return (JSONObject) JSON.toJSON(new SuccessResponse());

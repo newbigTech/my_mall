@@ -11,14 +11,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 public class SSLUtil {
 
@@ -82,24 +75,24 @@ public class SSLUtil {
 //		return client;
 //	}
 
-	public static CloseableHttpClient createClientDefault() {
-		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
-				.register("http", PlainConnectionSocketFactory.INSTANCE).build();
-		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
-				socketFactoryRegistry);
-		CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager)
-				.setDefaultRequestConfig(requestConfig).build();
-		return httpClient;
-	}
-
-	public static CloseableHttpClient createSSLClientDefault() {
-		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
-				.register("http", PlainConnectionSocketFactory.INSTANCE).register("https", getSocketFactory()).build();
-		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
-				socketFactoryRegistry);
-		CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager)
-				.setDefaultRequestConfig(requestConfig).build();
-		return httpClient;
-	}
+//	public static CloseableHttpClient createClientDefault() {
+//		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+//				.register("http", PlainConnectionSocketFactory.INSTANCE).build();
+//		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
+//				socketFactoryRegistry);
+//		CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager)
+//				.setDefaultRequestConfig(requestConfig).build();
+//		return httpClient;
+//	}
+//
+//	public static CloseableHttpClient createSSLClientDefault() {
+//		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+//				.register("http", PlainConnectionSocketFactory.INSTANCE).register("https", getSocketFactory()).build();
+//		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
+//				socketFactoryRegistry);
+//		CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager)
+//				.setDefaultRequestConfig(requestConfig).build();
+//		return httpClient;
+//	}
 
 }

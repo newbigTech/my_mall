@@ -26,7 +26,6 @@ import com.d2c.order.third.kaola.KaolaClient;
 import com.d2c.product.model.ProductSku;
 import com.d2c.product.service.ProductService;
 import com.d2c.product.service.ProductSkuService;
-import com.d2c.util.http.HttpUtil;
 import com.d2c.util.string.StringUtil;
 
 @Controller
@@ -112,8 +111,8 @@ public class KaolaController extends BaseController {
 		String aa = StringEscapeUtils.unescapeHtml((String) params.get("info"));
 		System.out.println(aa);
 		params.put("info", aa);
-		String result = HttpUtil.sendPostHttps("http://localhost:8081/kaola/callback/goods", params, null);
-		System.out.println(JSON.parseObject(result).getInteger("recCode"));
+//		String result = HttpUtil.sendPostHttps("http://localhost:8081/kaola/callback/goods", params, null);
+//		System.out.println(JSON.parseObject(result).getInteger("recCode"));
 	}
 
 }

@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.dubbo.common.json.JSONObject;
 import com.d2c.util.date.DateUtil;
 
 public class WeixinPushEntity implements Serializable {

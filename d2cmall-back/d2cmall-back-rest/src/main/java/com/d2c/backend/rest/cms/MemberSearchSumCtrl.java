@@ -216,10 +216,10 @@ public class MemberSearchSumCtrl extends BaseCtrl<MemberSearchSumSearcher> {
 		if (vc == null || StringUtils.isBlank(vc.getValue())) {
 			return;
 		}
-		if (PinYinUtil.isMessyCode(vc.getValue())) {// 乱码处理
-			memberSearchKeyService.remove(vc.getValue(), date, 0);
-			return;
-		}
+//		if (PinYinUtil.isMessyCode(vc.getValue())) {// 乱码处理
+//			memberSearchKeyService.remove(vc.getValue(), date, 0);
+//			return;
+//		}
 		int n = memberSearchSumService.updateNumberByKeyword(vc.getValue(), vc.getCount());
 		MemberSearchSum memberSearchSum = null;
 		if (n == 0) {

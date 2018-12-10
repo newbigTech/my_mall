@@ -46,11 +46,11 @@
 		</dependency> -->
 
 		<!-- productAI -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>cn.productai.api</groupId>
 			<artifactId>productai-java-sdk</artifactId>
 			<version>2.1.4</version>
-		</dependency>
+		</dependency> -->
 		
 	</dependencies>
 

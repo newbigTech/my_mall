@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson.JSONObject;
-import com.d2c.msg.model.Signature;
 import com.d2c.msg.third.wechat.WeixinPushEntity;
-import com.d2c.util.string.StringUtil;
 
 @Service("weixinPushService")
 public class WeixinPushServiceImpl implements WeixinPushService {
@@ -27,20 +24,20 @@ public class WeixinPushServiceImpl implements WeixinPushService {
 
 	@Override
 	public void send(WeixinPushEntity msgEntity) {
-		Signature signature = signatureService.findByAppid(appId);
-		JSONObject obj = new JSONObject();
-		obj.put("touser", msgEntity.getOpenId());
-		obj.put("template_id", msgEntity.getTemplateId());
-		obj.put("url", msgEntity.getUrl());
-		obj.put("miniprogram", msgEntity.getMiniprogram());
-		obj.put("data", msgEntity.getObj());
-		try {
-			if (!StringUtil.isBlank(msgEntity.getOpenId())) {
-				restTemplate.postForEntity(sendUrl + signature.getToken(), obj, JSONObject.class);
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
+//		Signature signature = signatureService.findByAppid(appId);
+//		JSONObject obj = new JSONObject();
+//		obj.put("touser", msgEntity.getOpenId());
+//		obj.put("template_id", msgEntity.getTemplateId());
+//		obj.put("url", msgEntity.getUrl());
+//		obj.put("miniprogram", msgEntity.getMiniprogram());
+//		obj.put("data", msgEntity.getObj());
+//		try {
+//			if (!StringUtil.isBlank(msgEntity.getOpenId())) {
+//				restTemplate.postForEntity(sendUrl + signature.getToken(), obj, JSONObject.class);
+//			}
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//		}
 	}
 
 	public String getAppId() {

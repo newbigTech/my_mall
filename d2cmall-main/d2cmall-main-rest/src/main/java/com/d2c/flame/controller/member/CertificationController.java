@@ -1,7 +1,5 @@
 package com.d2c.flame.controller.member;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alipay.api.AlipayApiException;
 import com.d2c.cache.redis.RedisHandler;
 import com.d2c.common.api.page.PageModel;
 import com.d2c.common.api.page.PageResult;
@@ -21,8 +18,6 @@ import com.d2c.member.model.MemberCertification;
 import com.d2c.member.model.MemberInfo;
 import com.d2c.member.query.MemberCertificationSearcher;
 import com.d2c.member.service.MemberCertificationService;
-import com.d2c.member.third.aliyun.AuthenticateClient;
-import com.d2c.util.date.DateUtil;
 import com.d2c.util.string.StringUtil;
 
 /**
@@ -207,7 +202,7 @@ public class CertificationController extends BaseController {
 	 * @throws AlipayApiException
 	 */
 	@RequestMapping(value = "/bizno", method = RequestMethod.POST)
-	public ResponseResult getBizNo(String certNo, String name) throws AlipayApiException {
+	public ResponseResult getBizNo(String certNo, String name) {
 		ResponseResult result = new ResponseResult();
 		MemberInfo memberInfo = this.getLoginMemberInfo();
 		if (StringUtil.isBlack(certNo) || StringUtil.isBlack(name)) {
@@ -220,12 +215,12 @@ public class CertificationController extends BaseController {
 		if (count >= 3) {
 			throw new BusinessException("您今日已超过3次验证，明日再来验证吧");
 		}
-		String bizNo = AuthenticateClient.getInstance().getBizNo(certNo, name);
-		if (StringUtil.isNotBlank(bizNo)) {
-			redisHandler.setInSec("certification_" + memberInfo.getId(), count + 1,
-					(DateUtil.getEndOfDay(new Date()).getTime() - new Date().getTime()) / 1000);
-		}
-		result.put("bizNo", bizNo);
+//		String bizNo = AuthenticateClient.getInstance().getBizNo(certNo, name);
+//		if (StringUtil.isNotBlank(bizNo)) {
+//			redisHandler.setInSec("certification_" + memberInfo.getId(), count + 1,
+//					(DateUtil.getEndOfDay(new Date()).getTime() - new Date().getTime()) / 1000);
+//		}
+//		result.put("bizNo", bizNo);
 		return result;
 	}
 

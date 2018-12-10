@@ -1,12 +1,6 @@
 package com.d2c.msg.third.sms.emay;
 
-import java.util.Date;
-
 import org.springframework.web.client.RestTemplate;
-
-import com.alibaba.fastjson.JSONObject;
-import com.d2c.common.base.utils.security.MD5Util;
-import com.d2c.util.date.DateUtil;
 
 /**
  * 语音验证码
@@ -31,14 +25,14 @@ public class EmayDomesticAudioClient {
 	private static RestTemplate restTemplate = new RestTemplate();
 
 	public static int sendAudioCode(String mobile, String code) {
-		String timestamp = DateUtil.convertDate2Str(new Date(), "yyyyMMddHHmmss");
-		String sign = MD5Util.encodeMD5Hex(appId + secretKey + timestamp);
-		String result = restTemplate.getForObject(url + "?appId=" + appId + "&timestamp=" + timestamp + "&sign=" + sign
-				+ "&mobile=" + mobile + "&content=" + code, String.class);
-		JSONObject obj = JSONObject.parseObject(result);
-		if (obj.get("code").toString().equalsIgnoreCase("SUCCESS")) {
-			return 1;
-		}
+//		String timestamp = DateUtil.convertDate2Str(new Date(), "yyyyMMddHHmmss");
+//		String sign = MD5Util.encodeMD5Hex(appId + secretKey + timestamp);
+//		String result = restTemplate.getForObject(url + "?appId=" + appId + "&timestamp=" + timestamp + "&sign=" + sign
+//				+ "&mobile=" + mobile + "&content=" + code, String.class);
+//		JSONObject obj = JSONObject.parseObject(result);
+//		if (obj.get("code").toString().equalsIgnoreCase("SUCCESS")) {
+//			return 1;
+//		}
 		return 0;
 	}
 

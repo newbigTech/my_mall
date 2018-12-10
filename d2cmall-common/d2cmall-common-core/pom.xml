@@ -72,7 +72,7 @@
 		
 		<!-- jxl -->
 		<dependency>
-			<groupId>jexcelapi</groupId>
+			<groupId>net.sourceforge.jexcelapi</groupId>
 			<artifactId>jxl</artifactId>
 		</dependency>
 		

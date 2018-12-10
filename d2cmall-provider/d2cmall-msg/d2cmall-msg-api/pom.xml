@@ -44,6 +44,7 @@
 			<version>0.4_1</version>
 		</dependency>
 		<!-- dyvms -->
+		<!--
 		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-core</artifactId>
@@ -54,6 +55,7 @@
 			<artifactId>aliyun-java-sdk-dyvmsapi</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		-->
 		<!-- mail -->
 		<dependency>
 			<groupId>javax.mail</groupId>

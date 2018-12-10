@@ -2,7 +2,6 @@ package com.d2c.flame.controller.order;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.HashMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,6 @@ import com.d2c.order.third.payment.wxpay.client.WxPayUtil;
 import com.d2c.order.third.payment.wxpay.core.WeixinPayHelper;
 import com.d2c.order.third.payment.wxpay.core.WxWapConfig;
 import com.d2c.order.third.payment.wxpay.core.WxXcxConfig;
-import com.d2c.util.http.HttpUtil;
-import com.d2c.util.string.StringUtil;
 
 /**
  * 消费相关包括付款
@@ -299,36 +296,36 @@ public class PaymentController extends BaseController {
 			}
 			wxPayHelper.setTotal_fee(df.format(order.getBillTotalFee().multiply(new BigDecimal(100)))); // 支付金额
 			wxPayHelper.setTrade_type(wxType);
-			String jsXml = wxPayHelper.paramXml(pay_key);
-			String responseXml = HttpUtil.sendPostXmlHttps("https://api.mch.weixin.qq.com/pay/unifiedorder", jsXml);
-			HashMap<String, String> responseMap = StringUtil.xmlToMap(responseXml);
-			if (responseMap.containsKey("return_msg") && "OK".equals(responseMap.get("return_msg"))
-					&& "SUCCESS".equals(responseMap.get("return_code"))
-					&& "SUCCESS".equals(responseMap.get("result_code"))) {
-				String responseSignOld = responseMap.get("sign");
-				responseMap.remove("sign");
-				String responseSignNew = WxPayUtil.createSign(responseMap, pay_key);
-				if (responseSignNew.equals(responseSignOld)) {// 微信返回xml报文，签名验证
-					if ("JSAPI".equals(wxType)) {// js支付
-						HashMap<String, String> result = new HashMap<>();
-						result.put("appId", responseMap.get("appid"));
-						result.put("nonceStr", WxPayUtil.createNoncestr());
-						result.put("package", "prepay_id=" + responseMap.get("prepay_id"));
-						result.put("signType", "MD5");
-						result.put("timeStamp", WxPayUtil.createTimestamp());
-						String paySign = WxPayUtil.createSign(result, pay_key);
-						result.put("paySign", paySign);
-						result.put("successUrl", wxWapConfig.getRETURN_URL());// 支付成功，跳转到我的订单
-						model.addAllAttributes(result);
-						return "pay/wx_payment";
-					} else if ("NATIVE".equals(wxType)) {// 扫码付
-						model.addAttribute("code_url", responseMap.get("code_url"));
-						model.addAttribute("orderSn", order.getBillSourceSn());
-						model.addAttribute("totalFee", order.getBillTotalFee());
-						return "pay/wx_scan_payment";
-					}
-				}
-			}
+//			String jsXml = wxPayHelper.paramXml(pay_key);
+//			String responseXml = HttpUtil.sendPostXmlHttps("https://api.mch.weixin.qq.com/pay/unifiedorder", jsXml);
+//			HashMap<String, String> responseMap = StringUtil.xmlToMap(responseXml);
+//			if (responseMap.containsKey("return_msg") && "OK".equals(responseMap.get("return_msg"))
+//					&& "SUCCESS".equals(responseMap.get("return_code"))
+//					&& "SUCCESS".equals(responseMap.get("result_code"))) {
+//				String responseSignOld = responseMap.get("sign");
+//				responseMap.remove("sign");
+//				String responseSignNew = WxPayUtil.createSign(responseMap, pay_key);
+//				if (responseSignNew.equals(responseSignOld)) {// 微信返回xml报文，签名验证
+//					if ("JSAPI".equals(wxType)) {// js支付
+//						HashMap<String, String> result = new HashMap<>();
+//						result.put("appId", responseMap.get("appid"));
+//						result.put("nonceStr", WxPayUtil.createNoncestr());
+//						result.put("package", "prepay_id=" + responseMap.get("prepay_id"));
+//						result.put("signType", "MD5");
+//						result.put("timeStamp", WxPayUtil.createTimestamp());
+//						String paySign = WxPayUtil.createSign(result, pay_key);
+//						result.put("paySign", paySign);
+//						result.put("successUrl", wxWapConfig.getRETURN_URL());// 支付成功，跳转到我的订单
+//						model.addAllAttributes(result);
+//						return "pay/wx_payment";
+//					} else if ("NATIVE".equals(wxType)) {// 扫码付
+//						model.addAttribute("code_url", responseMap.get("code_url"));
+//						model.addAttribute("orderSn", order.getBillSourceSn());
+//						model.addAttribute("totalFee", order.getBillTotalFee());
+//						return "pay/wx_scan_payment";
+//					}
+//				}
+//			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

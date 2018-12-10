@@ -28,12 +28,12 @@ public class AppTest extends BaseTest {
 		// null, params);
 		// params.put("sign", sign);
 
-		params.put("requisition_id", 230718);
-		params.put("delivery_corp", "sf");
-		params.put("delivery_sn", "123123");
-		params.put("delivery_quantity", 1);
-		String result = HttpUtil.sendPostHttps("http://localhost:8060/openapi/requisition/delivery", params, null);
-		System.out.println(result);
+//		params.put("requisition_id", 230718);
+//		params.put("delivery_corp", "sf");
+//		params.put("delivery_sn", "123123");
+//		params.put("delivery_quantity", 1);
+//		String result = HttpUtil.sendPostHttps("http://localhost:8060/openapi/requisition/delivery", params, null);
+//		System.out.println(result);
 
 	}
 

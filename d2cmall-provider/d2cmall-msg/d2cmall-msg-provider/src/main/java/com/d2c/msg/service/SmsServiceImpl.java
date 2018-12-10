@@ -70,7 +70,8 @@ public class SmsServiceImpl implements SmsService {
 
 	@Override
 	public int doSendVms(String mobile, String code, String tempId, JSONObject params) {
-		return DyvmsClient.singleCallByTts(mobile, code, tempId, params);
+//		return DyvmsClient.singleCallByTts(mobile, code, tempId, params);
+		return 0;
 	}
 
 }

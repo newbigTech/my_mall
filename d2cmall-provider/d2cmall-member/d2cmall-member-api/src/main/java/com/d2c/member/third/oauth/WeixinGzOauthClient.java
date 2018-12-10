@@ -176,7 +176,8 @@ public class WeixinGzOauthClient {
 	}
 
 	private CloseableHttpClient getHttpClient() {
-		return SSLUtil.createSSLClientDefault();
+//		return SSLUtil.createSSLClientDefault();
+		return null;
 	}
 
 	/**

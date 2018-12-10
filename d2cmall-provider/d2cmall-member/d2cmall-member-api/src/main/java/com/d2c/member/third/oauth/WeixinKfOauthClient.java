@@ -1,15 +1,7 @@
 package com.d2c.member.third.oauth;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.util.EntityUtils;
-
-import com.d2c.util.http.SSLUtil;
 
 /**
  * 微信开放平台
@@ -53,32 +45,32 @@ public class WeixinKfOauthClient {
 	 * @return
 	 */
 	public String getAccessTokenAndOpenId(String code) {
-		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + WEIXIN_KF_APPKEY + "&secret="
-				+ WEIXIN_KF_APPSECRET + "&code=" + code + "&grant_type=authorization_code";
-		CloseableHttpClient client = null;
-		HttpGet get = null;
-		try {
-			client = SSLUtil.createSSLClientDefault();
-			get = new HttpGet(url);
-			HttpResponse response = client.execute(get);
-			if (response.getStatusLine().getStatusCode() == 200) {
-				String result = EntityUtils.toString(response.getEntity());
-				return result;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (get != null) {
-				get.releaseConnection();
-			}
-			if (client != null) {
-				try {
-					client.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+//		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + WEIXIN_KF_APPKEY + "&secret="
+//				+ WEIXIN_KF_APPSECRET + "&code=" + code + "&grant_type=authorization_code";
+//		CloseableHttpClient client = null;
+//		HttpGet get = null;
+//		try {
+//			client = SSLUtil.createSSLClientDefault();
+//			get = new HttpGet(url);
+//			HttpResponse response = client.execute(get);
+//			if (response.getStatusLine().getStatusCode() == 200) {
+//				String result = EntityUtils.toString(response.getEntity());
+//				return result;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (get != null) {
+//				get.releaseConnection();
+//			}
+//			if (client != null) {
+//				try {
+//					client.close();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 		return null;
 	}
 
@@ -90,32 +82,32 @@ public class WeixinKfOauthClient {
 	 * @return
 	 */
 	public String getUser(String accessToken, String openId) {
-		String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId;
-		CloseableHttpClient client = null;
-		HttpGet get = null;
-		try {
-			client = SSLUtil.createSSLClientDefault();
-			// client = WebClientDevWrapper.wrapClient(client);
-			get = new HttpGet(url);
-			HttpResponse response = client.execute(get);
-			if (response.getStatusLine().getStatusCode() == 200) {
-				String result = EntityUtils.toString(response.getEntity(), "UTF-8");
-				return result;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (get != null) {
-				get.releaseConnection();
-			}
-			if (client != null) {
-				try {
-					client.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+//		String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId;
+//		CloseableHttpClient client = null;
+//		HttpGet get = null;
+//		try {
+//			client = SSLUtil.createSSLClientDefault();
+//			// client = WebClientDevWrapper.wrapClient(client);
+//			get = new HttpGet(url);
+//			HttpResponse response = client.execute(get);
+//			if (response.getStatusLine().getStatusCode() == 200) {
+//				String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+//				return result;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (get != null) {
+//				get.releaseConnection();
+//			}
+//			if (client != null) {
+//				try {
+//					client.close();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 		return null;
 	}
 
@@ -127,31 +119,31 @@ public class WeixinKfOauthClient {
 	 * @return
 	 */
 	public String getOldUser(String accessToken, String openId) {
-		String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId;
-		CloseableHttpClient client = null;
-		HttpGet get = null;
-		try {
-			client = SSLUtil.createSSLClientDefault();
-			get = new HttpGet(url);
-			HttpResponse response = client.execute(get);
-			if (response.getStatusLine().getStatusCode() == 200) {
-				String result = EntityUtils.toString(response.getEntity(), "UTF-8");
-				return result;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (get != null) {
-				get.releaseConnection();
-			}
-			if (client != null) {
-				try {
-					client.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+//		String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId;
+//		CloseableHttpClient client = null;
+//		HttpGet get = null;
+//		try {
+//			client = SSLUtil.createSSLClientDefault();
+//			get = new HttpGet(url);
+//			HttpResponse response = client.execute(get);
+//			if (response.getStatusLine().getStatusCode() == 200) {
+//				String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+//				return result;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (get != null) {
+//				get.releaseConnection();
+//			}
+//			if (client != null) {
+//				try {
+//					client.close();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 		return null;
 	}
 

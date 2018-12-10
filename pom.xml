@@ -83,7 +83,7 @@
 		<junit_version>4.12</junit_version>
 		<jxl_version>2.6.12</jxl_version>
 		<ethereumj_version>1.7.2-RELEASE</ethereumj_version>
-		<lcn_version>4.1.0-MY</lcn_version>
+		<lcn_version>4.1.0</lcn_version>
 		<tensorflow_version>1.8.0</tensorflow_version>
 
 		<freemarker.version>2.3.23</freemarker.version>
@@ -634,7 +634,7 @@
 			</dependency>
 
 			<dependency>
-				<groupId>jexcelapi</groupId>
+				<groupId>net.sourceforge.jexcelapi</groupId>
 				<artifactId>jxl</artifactId>
 				<version>${jxl_version}</version>
 			</dependency>
@@ -719,19 +719,19 @@
 
 			<!-- LCN -->
 			<dependency>
-				<groupId>com.mythird</groupId>
+				<groupId>com.codingapi</groupId>
 				<artifactId>tx-client</artifactId>
 				<version>${lcn_version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.mythird</groupId>
+				<groupId>com.codingapi</groupId>
 				<artifactId>tx-plugins-db</artifactId>
 				<version>${lcn_version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.mythird</groupId>
+				<groupId>com.codingapi</groupId>
 				<artifactId>transaction-dubbo</artifactId>
 				<version>${lcn_version}</version>
 			</dependency>

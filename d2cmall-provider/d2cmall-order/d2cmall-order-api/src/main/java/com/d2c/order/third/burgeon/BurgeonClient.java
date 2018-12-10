@@ -11,12 +11,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.d2c.common.base.utils.security.MD5Util;
 import com.d2c.common.core.helper.SpringHelper;
 import com.d2c.order.property.OrderProperties;
-import com.d2c.util.http.HttpUtil;
 
 public class BurgeonClient {
 
@@ -51,14 +49,14 @@ public class BurgeonClient {
 		params.put("data", data);
 		params.put("sign", md5Key.toUpperCase());
 		toLog(params.toString());
-		String response = HttpUtil.sendPostHttps(orderProperties.getBurgeonApiUrl(), params, 15000);
-		if (response == null) {
-			throw new Exception("伯俊系统响应超时");
-		}
-		JSONObject result = JSON.parseObject(response);
-		if (!result.getString("resultCode").equals("0")) {
-			throw new Exception(result.getString("exceptionMessage"));
-		}
+//		String response = HttpUtil.sendPostHttps(orderProperties.getBurgeonApiUrl(), params, 15000);
+//		if (response == null) {
+//			throw new Exception("伯俊系统响应超时");
+//		}
+//		JSONObject result = JSON.parseObject(response);
+//		if (!result.getString("resultCode").equals("0")) {
+//			throw new Exception(result.getString("exceptionMessage"));
+//		}
 	}
 
 	// 伯俊提交日志

@@ -17,7 +17,6 @@ import com.d2c.msg.dao.MemberSearchSumMapper;
 import com.d2c.msg.model.MemberSearchSum;
 import com.d2c.msg.query.MemberSearchSumSearcher;
 import com.d2c.mybatis.service.ListServiceImpl;
-import com.d2c.util.string.PinYinUtil;
 
 @Service("memberSearchSumService")
 @Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -77,14 +76,14 @@ public class MemberSearchSumServiceImpl extends ListServiceImpl<MemberSearchSum>
 		}
 		result = memberSearchSumMapper.doSystem(id);
 		String keyword = entity.getKeyword();
-		if (result > 0 && PinYinUtil.containChinese(keyword)) {
+//		if (result > 0 && PinYinUtil.containChinese(keyword)) {
 			// entity.setKeyword(PinYinUtil.getFirstSpell(keyword).toLowerCase());
 			// entity.setId(null);
 			// super.save(entity);
 			// entity.setKeyword(PinYinUtil.getFullSpell(keyword).toLowerCase());
 			// entity.setId(null);
 			// super.save(entity);
-		}
+//		}
 		return result;
 	}
 
